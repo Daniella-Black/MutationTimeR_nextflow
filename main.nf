@@ -9,7 +9,6 @@
  //   .set{ ch_input }
 
 
-nextflow.enable.dsl=2  
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
     tag"$sample"
