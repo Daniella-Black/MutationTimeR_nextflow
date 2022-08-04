@@ -9,23 +9,6 @@
  //   .set{ ch_input }
 
 
-//run the script to make MTR input on above file paths
-process  CloudOS_MTR_input{
-    tag"$sample"
-    publishDir "${params.outdir}", mode: 'copy'
-
-    input:
-    tuple val(sample), file(vcf_path), file(cnv_path), file(header), file(vcftobedpe)
-
-    output:
-    file "*.tsv"
-    file "*.txt"
-
-    script:
-    """
-     CloudOS_MTR_input_script.R --vanilla $sample $vcf_path $cnv_path $header $vcftobedpe
-    """
-}
 
 workflow {
     Channel.fromPath(params.inputlist) \
