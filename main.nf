@@ -30,6 +30,6 @@ nextflow.preview.dsl=2
 workflow {
     Channel.fromPath(params.inputlist) \
         | splitCsv(header:true) \
-        | map { row-> tuple(row.sample, file(row.vcf_path), file(row.cnv_path), file(row.header), file(row.vcftobedpe)) } 
-        //| CloudOS_MTR_input
+        | map { row-> tuple(row.sample, file(row.vcf_path), file(row.cnv_path), file(row.header), file(row.vcftobedpe)) } \
+        | CloudOS_MTR_input
 }
