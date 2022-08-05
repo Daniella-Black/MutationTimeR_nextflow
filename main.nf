@@ -1,4 +1,5 @@
 #! /usr/bin/env nextflow
+nextflow.preview.dsl=2
 
 //define channels from input file
 //Channel 
@@ -7,7 +8,6 @@
 //   .splitCsv(skip:1)
 //    .map{sample, vcf_path,cnv_path, header, vcftobedpe -> [sample, vcf_path, cnv_path, header, vcftobedpe]}
  //   .set{ ch_input }
-
 
 
 workflow {
