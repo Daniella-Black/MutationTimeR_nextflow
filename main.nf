@@ -16,14 +16,14 @@ nextflow.preview.dsl=2
     input:
     tuple val(sample), file(vcf_path), file(cnv_path), file(header), file(vcftobedpe)
 
-    output:
-    file "*.tsv"
-    file "*.txt"
+    //output:
+    //file "*.tsv"
+    //file "*.txt"
 
-    //script:
-    //"""
-     //CloudOS_MTR_input_script.R --vanilla $sample $vcf_path $cnv_path $header $vcftobedpe
-    //"""
+    script:
+    """
+    CloudOS_MTR_input_script.R --vanilla $sample $vcf_path $cnv_path $header $vcftobedpe
+    """
 }
 
 
