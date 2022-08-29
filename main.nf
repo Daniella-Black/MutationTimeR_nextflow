@@ -33,8 +33,6 @@ nextflow.preview.dsl=2
     '''
     echo "$PWD" > result.txt
     '''
-   
-   numbers.subscribe { println "Received: "}
 }
 
 numbers.subscribe { println "Received: " + it.text }
