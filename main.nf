@@ -15,7 +15,7 @@ nextflow.preview.dsl=2
     println params.outdir
     input:
     tuple val(sample), file(vcf_path), file(cnv_path), file(header), file(vcftobedpe)
-    println $vcf_path
+    
     //output:
     //file "*.tsv"
     //file "*.txt"
