@@ -9,27 +9,40 @@ nextflow.preview.dsl=2
 //    .map{sample, vcf_path,cnv_path, header, vcftobedpe -> [sample, vcf_path, cnv_path, header, vcftobedpe]}
  //   .set{ ch_input }
  
- process  CloudOS_MTR_input{
-    tag"$sample"
-    publishDir "${params.outdir}", mode: 'copy'
-    println params.outdir
-    input:
-    tuple val(sample), file(vcf_path), file(cnv_path), file(header), file(vcftobedpe)
+ 
+ //process  CloudOS_MTR_input{
+   // tag"$sample"
+ //   publishDir "${params.outdir}", mode: 'copy'
+ //   println params.outdir
+  //  input:
+ //   tuple val(sample), file(vcf_path), file(cnv_path), file(header), file(vcftobedpe)
     
-    //output:
-    //file "*.tsv"
-    //file "*.txt"
+ //   //output:
+ //   //file "*.tsv"
+ //   //file "*.txt"
 
-    script:
-    """
-    CloudOS_MTR_input_script.R --vanilla $sample $vcf_path $cnv_path $header $vcftobedpe
-    """
+ //   script:
+ //   """
+//    CloudOS_MTR_input_script.R --vanilla $sample $vcf_path $cnv_path $header $vcftobedpe
+//    """
+//}
+
+
+process randomNum {
+  output:
+  path 'result.txt' into numbers
+
+  '''
+  echo $RANDOM > result.txt
+  '''
 }
 
+numbers.subscribe { println "Received: " + it.text }
 
-workflow {
-    Channel.fromPath(params.inputlist) \
-        | splitCsv(header:true) \
-        | map { row-> tuple(row.sample, file(row.vcf_path), file(row.cnv_path), file(row.header), file(row.vcftobedpe)) } \
-        | CloudOS_MTR_input
-}
+
+//workflow {
+//    Channel.fromPath(params.inputlist) \
+//        | splitCsv(header:true) \
+//        | map { row-> tuple(row.sample, file(row.vcf_path), file(row.cnv_path), file(row.header), file(row.vcftobedpe)) } \
+//        | CloudOS_MTR_input
+//}
