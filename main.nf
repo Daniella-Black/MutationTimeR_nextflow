@@ -13,7 +13,7 @@ nextflow.preview.dsl=2
  process  CloudOS_MTR_input{
     tag"$sample"
     publishDir "${params.outdir}", mode: 'copy'
-    println params.outdir
+    //println params.outdir
     input:
       tuple val(sample), file(vcf_path), file(cnv_path), file(header), file(vcftobedpe)
     
@@ -42,6 +42,5 @@ workflow {
     Channel.fromPath(params.inputlist) \
         | splitCsv(header:true) \
         | map { row-> tuple(row.sample, file(row.vcf_path), file(row.cnv_path), file(row.header), file(row.vcftobedpe)) } \
-        | CloudOS_MTR_input \
-        | CloudOS_MTR_input.out.samples_bam.view()
+        | CloudOS_MTR_input 
 }
