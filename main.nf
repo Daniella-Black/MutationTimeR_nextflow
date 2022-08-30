@@ -28,7 +28,7 @@ nextflow.preview.dsl=2
     
     
     output:
-    path 'result.txt' into numbers
+    path 'result.txt', emit: samples_bam
 
     '''
     echo "$PWD" > result.txt
@@ -43,4 +43,5 @@ workflow {
         | splitCsv(header:true) \
         | map { row-> tuple(row.sample, file(row.vcf_path), file(row.cnv_path), file(row.header), file(row.vcftobedpe)) } \
         | CloudOS_MTR_input
+        | CloudOS_MTR_input.out.samples_bam.view()
 }
