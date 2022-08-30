@@ -35,7 +35,7 @@ nextflow.preview.dsl=2
     '''
 }
 
-numbers.subscribe { println "Received: " + it.text }
+//numbers.subscribe { println "Received: " + it.text }
 
 
 workflow {
