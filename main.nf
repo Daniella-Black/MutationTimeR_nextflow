@@ -23,6 +23,6 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    CloudOS_MTR_input_script.R $sample $vcf_path $cnv_path $header $vcftobedpe 
+    Rscript CloudOS_MTR_input_script.R $sample $vcf_path $cnv_path $header $vcftobedpe 
     """ 
 }
