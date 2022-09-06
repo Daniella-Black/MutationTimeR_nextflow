@@ -1,3 +1,4 @@
+#!/usr/local/bin/Rscript 
 install.packages('BiocManager')
 BiocManager::install('VariantAnnotation')
 library(VariantAnnotation)
