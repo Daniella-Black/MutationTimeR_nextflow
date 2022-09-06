@@ -3,7 +3,7 @@ install.packages('BiocManager')
 BiocManager::install('VariantAnnotation')
 library(VariantAnnotation)
 
-"""
+
 args = commandArgs(trailingOnly=TRUE)
 
 print(args)
@@ -149,7 +149,7 @@ if(file.exists(sv_file)){
 
 
 
-""""
+
 
 
 
