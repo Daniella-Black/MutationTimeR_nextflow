@@ -31,8 +31,8 @@ process  CloudOS_MTR_input{
     
     script:
     '''
-    echo Hello there! > file1.txt
-    echo What a beautiful day > file2.txt
-    echo I hope you are having fun! > file3.txt
+    echo $sample > file1.txt
+    echo $vcf_path > file2.txt
+    echo $cnv_path > file3.txt
     '''
 }
