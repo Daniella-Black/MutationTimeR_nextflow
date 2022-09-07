@@ -14,12 +14,12 @@ process  CloudOS_MTR_input{
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
-    set val(sample), file(vcf_path), file(cnv_path), file(header), file(vcftobedpe) from ch_input
+    set val(sample), val(vcf_path), val(cnv_path), val(header), val(vcftobedpe) from ch_input
 
     output:
-    //file "my_data.csv"
-    file "*.tsv"
-    file "*.txt"
+    file "my_data.csv"
+    //file "*.tsv"
+    //file "*.txt"
     
 
     script:
