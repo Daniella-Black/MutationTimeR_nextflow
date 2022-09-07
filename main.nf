@@ -16,23 +16,24 @@ process  CloudOS_MTR_input{
     input:
     set val(sample), file(vcf_path), file(cnv_path), file(header), file(vcftobedpe) from ch_input
 
-    //output:
+    output:
+    file "my_data.csv"
     //file "*.tsv"
     //file "*.txt"
-    //file "my_data.csv"
+    
 
-    //script:
-    //"""
-    //CloudOS_MTR_input_script.R $sample $vcf_path $cnv_path $header $vcftobedpe 
-    //"""
-    
-    output:
-    path '*.txt'
-    
     script:
-    '''
-    echo $sample > file1.txt
-    echo $vcf_path > file2.txt
-    echo $cnv_path > file3.txt
-    '''
+    """
+    Rscript /home/software/CloudOS_MTR_input_script.R $sample $vcf_path $cnv_path $header $vcftobedpe 
+    """
+    
+    //output:
+    //path '*.txt'
+    
+    //script:
+    //'''
+    //echo $sample > file1.txt
+    //echo $vcf_path > file2.txt
+    //echo $cnv_path > file3.txt
+    //'''
 }
