@@ -24,7 +24,7 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    Rscript /home/software/CloudOS_MTR_input_script.R $sample $vcf_path $cnv_path $header $vcftobedpe 
+    Rscript /home/CloudOS_MTR_input_script.R $sample $vcf_path $cnv_path $header $vcftobedpe 
     """
     
     //output:
