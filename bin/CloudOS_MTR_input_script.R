@@ -4,7 +4,7 @@ BiocManager::install('VariantAnnotation')
 library(VariantAnnotation)
 
 mydata<- 'hello'
-write.csv(my_data, file = "./results/my_data.csv")
+#write.csv(my_data, file = "./results/my_data.csv")
 """
 args = commandArgs(trailingOnly=TRUE)
 
