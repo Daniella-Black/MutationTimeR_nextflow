@@ -2,10 +2,6 @@
 install.packages('BiocManager')
 BiocManager::install('VariantAnnotation')
 library(VariantAnnotation)
-
-mydata<- 'hello'
-#write.csv(my_data, file = "./results/my_data.csv")
-"""
 args = commandArgs(trailingOnly=TRUE)
 
 print(args)
@@ -148,10 +144,6 @@ if(file.exists(sv_file)){
   e.snv  <- NULL
   smallvariants_VCF <- NULL
 }
-
-
-"""
-
 
 
 
