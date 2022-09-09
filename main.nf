@@ -17,7 +17,7 @@ process  CloudOS_MTR_input{
     set val(sample), val(vcf_path), val(cnv_path), val(header), val(vcftobedpe) from ch_input
 
     output:
-    file "my_data.csv"
+    //file "my_data.csv"
     file "*.tsv"
     file "*.txt"
     
