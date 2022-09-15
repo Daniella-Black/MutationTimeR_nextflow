@@ -23,7 +23,6 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    $vcf_path.copyTo( "${params.outdir}")
-  
+    cp $vcf_path "${params.outdir}"
     """ 
 }
