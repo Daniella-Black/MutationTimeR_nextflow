@@ -23,6 +23,6 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    x_$sample <- gunzip $vcf_path
+    gunzip $vcf_path > x_$sample
     """ 
 }
