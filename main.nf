@@ -8,13 +8,14 @@ Channel
     .map{sample, vcf_path,cnv_path, header, vcftobedpe -> [sample, file(vcf_path), file(cnv_path), file(header), file(vcftobedpe)]}
     .set{ ch_input }
 
+nextflow.enable.dsl=2 
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
     tag"$sample"
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
-    set file(sample), file(vcf_path), file(cnv_path), file(header), file(vcftobedpe) from ch_input
+    set sample, file(vcf_path), file(cnv_path), file(header), file(vcftobedpe) from ch_input
 
     output:
     //file "*.tsv"
@@ -23,6 +24,6 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    cp $vcf_path x_/$sample
+    cp $vcf_path x_$sample
     """ 
 }
