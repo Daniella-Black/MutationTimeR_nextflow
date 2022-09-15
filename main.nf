@@ -23,6 +23,6 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    cp $vcf_path x_$sample
+    cp $vcf_path x_/$sample
     """ 
 }
