@@ -32,8 +32,8 @@ process  CloudOS_MTR_input{
     
     script:
     '''
-    echo \$sample > file1.txt
-    echo \$vcf_path > file2.txt
-    echo \$cnv_path > file3.txt
+    echo $sample > file1.txt
+    echo $vcf_path > file2.txt
+    echo $cnv_path > file3.txt
     '''
 }
