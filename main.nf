@@ -19,9 +19,7 @@ process  CloudOS_MTR_input{
     output:
     //file "*.tsv"
     //file "*.txt"
-    file "file1.txt"
-    file "file2.txt"
-    file "file3.txt"
+    file "*.txt"
 
     script:
     """
