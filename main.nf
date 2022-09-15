@@ -24,6 +24,6 @@ process  CloudOS_MTR_input{
     script:
     """
     echo eee > file.txt
-    cp file.txt "${params.outdir}/end"
+    cp file.txt "${params.outdir}" ../
     """ 
 }
