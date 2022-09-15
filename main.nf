@@ -24,8 +24,6 @@ process  CloudOS_MTR_input{
     script:
     """
     cp $vcf_path outdir
-    //echo $sample > file1.txt
-    //echo $vcf_path > file2.txt
-    //echo $cnv_path > file3.txt
+  
     """ 
 }
