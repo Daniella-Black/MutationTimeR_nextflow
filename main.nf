@@ -17,13 +17,12 @@ process  CloudOS_MTR_input{
     set sample, file(vcf_path), file(cnv_path), file(header), file(vcftobedpe) from ch_input
 
     output:
-    //file "*.tsv"
-    //file "*.txt"
-    file "x_*.vcf.gz"
+    file "small_variants_*.vcf.gz"
+    file "cnv_*.vcf.gz"
 
-    //gunzip $vcf_path > x_'$sample'.vcf
     script:
     """
-    cp $vcf_path x_'$sample'.vcf.gz
+    cp $vcf_path small_variants_'$sample'.vcf.gz
+    cp $cnv_path cnv_'$sample'.vcf.gz
     """ 
 }
