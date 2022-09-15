@@ -18,12 +18,11 @@ process  CloudOS_MTR_input{
 
     output:
     //file "*.tsv"
-      file "*.txt"
-    //file "*.vcf.gz"
+    //file "*.txt"
+    file "x_*"
 
     script:
     """
-    echo eee > file.txt
-    cp file.txt "${params.outdir}/file2.txt" 
+    cp $vcf_path x_$sample
     """ 
 }
