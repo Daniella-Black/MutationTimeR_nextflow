@@ -10,12 +10,13 @@ Channel
 
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
-    tag"$sample"
+    
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
     set val(sample), val(vcf_path), val(cnv_path), val(header), val(vcftobedpe) from ch_input
-
+    //tag"$sample"
+    
     output:
     file "my_data.csv"
     //file "*.tsv"
