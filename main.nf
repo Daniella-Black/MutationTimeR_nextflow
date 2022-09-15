@@ -1,5 +1,5 @@
 #! /usr/bin/env nextflow
-
+nextflow.enable.dsl=2 
 //define channels from input file
 Channel 
     .fromPath(params.inputlist)
@@ -8,7 +8,7 @@ Channel
     .map{sample, vcf_path,cnv_path, header, vcftobedpe -> [sample, file(vcf_path), file(cnv_path), file(header), file(vcftobedpe)]}
     .set{ ch_input }
 
-nextflow.enable.dsl=2 
+
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
     tag"$sample"
