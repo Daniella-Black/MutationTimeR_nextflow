@@ -19,10 +19,11 @@ process  CloudOS_MTR_input{
     output:
     //file "*.tsv"
     //file "*.txt"
-    file "x_*.vcf"
+    file "x_*.vcf.gz"
 
+    //gunzip $vcf_path > x_'$sample'.vcf
     script:
     """
-    gunzip $vcf_path > x_'$sample'.vcf
+    cp $vcf_path x_'$sample'.vcf.gz
     """ 
 }
