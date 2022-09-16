@@ -14,7 +14,7 @@ process  CloudOS_MTR_input{
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
-    set tumour_sample_platekey, file(somatic_small_variants_vcf_path), file(somatic_cnv_vcf) from ch_input
+    set val(tumour_sample_platekey), file(somatic_small_variants_vcf_path), file(somatic_cnv_vcf) from ch_input
 
     output:
     file "small_variants_*.vcf.gz"
