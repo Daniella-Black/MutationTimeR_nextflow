@@ -4,7 +4,7 @@ Channel
     .fromPath(params.inputlist)
     .ifEmpty {exit 1, "Cannot find input file : ${params.inputlist}"}
     .splitCsv(skip:1)
-    .map{sample, vcf_path,cnv_path, header, vcftobedpe -> [sample, file(vcf_path), file(cnv_path), file(header), file(vcftobedpe)]}
+    .map{sample, vcf_path,cnv_path, header, vcftobedpe -> [sample, file(vcf_path), file(cnv_path)]}
     .set{ ch_input }
 
 
@@ -14,7 +14,7 @@ process  CloudOS_MTR_input{
     publishDir "${params.outdir}", mode: 'copy'
 
     input:
-    set sample, file(vcf_path), file(cnv_path), file(header), file(vcftobedpe) from ch_input
+    set sample, file(vcf_path), file(cnv_path) from ch_input
 
     output:
     file "small_variants_*.vcf.gz"
