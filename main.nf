@@ -20,11 +20,11 @@ process  CloudOS_MTR_input{
     output:
     //file "small_variants_*.vcf.gz"
     //file "cnv_*.vcf.gz"
-    file my_file.txt
+    file outfile.txt
 
     script:
     """
-    CloudOS_MTR_input.R
+    CloudOS_MTR_input_script.R
     """ 
     //cp $somatic_small_variants_vcf_path small_variants_'$tumour_sample_platekey'.vcf.gz
     //cp $somatic_cnv_vcf cnv_'$tumour_sample_platekey'.vcf.gz
