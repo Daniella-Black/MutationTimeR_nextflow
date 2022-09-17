@@ -20,7 +20,7 @@ process  CloudOS_MTR_input{
     output:
     //file "small_variants_*.vcf.gz"
     //file "cnv_*.vcf.gz"
-    file outfile.txt
+    file "outfile.txt"
 
     script:
     """
