@@ -24,7 +24,7 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    R  writeLines('$tumour_sample_platekey', paste0("out_", '$tumour_sample_platekey', ".txt"))
+    Rscript writeLines('$tumour_sample_platekey', paste0("out_", '$tumour_sample_platekey', ".txt"))
     """ 
     //cp $somatic_small_variants_vcf_path small_variants_'$tumour_sample_platekey'.vcf.gz
     //cp $somatic_cnv_vcf cnv_'$tumour_sample_platekey'.vcf.gz
