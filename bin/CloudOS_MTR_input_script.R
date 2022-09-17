@@ -1,4 +1,4 @@
-#!/usr/local/bin/Rscript
+
 args = commandArgs(trailingOnly=TRUE)
 
 sample = args[1]
