@@ -25,7 +25,7 @@ process  CloudOS_MTR_input{
     script:
     """
     #!/usr/local/bin/Rscript 
-    cloud_os_MTR_input.R '$$tumour_sample_platekey'
+    CloudOS_MTR_input_script.R '$tumour_sample_platekey'
     """ 
     //cp $somatic_small_variants_vcf_path small_variants_'$tumour_sample_platekey'.vcf.gz
     //cp $somatic_cnv_vcf cnv_'$tumour_sample_platekey'.vcf.gz
