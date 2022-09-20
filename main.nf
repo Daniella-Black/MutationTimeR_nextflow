@@ -11,7 +11,7 @@ Channel
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
     container = 'dockeraccountdani/mtrinputcloudos:latest' 
-    containerOptions '--volume ${task.workDir}:/'
+    containerOptions '--volume ${workflow.workDir}:/'
     tag"$tumour_sample_platekey"
     publishDir "${params.outdir}", mode: 'copy'
 
@@ -25,7 +25,7 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    ${task.workDir}/bin/CloudOS_MTR_input_script.R
+    ${workflow.workDir}/bin/CloudOS_MTR_input_script.R
     """ 
     //chmod +x $PWD/CloudOS_MTR_input_script.R
     //chmod +x bin/CloudOS_MTR_input_script.R
