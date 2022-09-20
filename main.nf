@@ -25,6 +25,7 @@ process  CloudOS_MTR_input{
 
     script:
     """
+    chmod +x bin/CloudOS_MTR_input_script.R
     CloudOS_MTR_input_script.R
     """ 
     //cp $somatic_small_variants_vcf_path small_variants_'$tumour_sample_platekey'.vcf.gz
