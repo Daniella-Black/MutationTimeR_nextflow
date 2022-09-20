@@ -25,8 +25,8 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    chmod +x $(pwd)/bin/CloudOS_MTR_input_script.R
-    $(pwd)/bin/CloudOS_MTR_input_script.R
+    chmod +x workDir/bin/CloudOS_MTR_input_script.R
+    workDir/bin/CloudOS_MTR_input_script.R
     """ 
     //chmod +x bin/CloudOS_MTR_input_script.R
     //CloudOS_MTR_input_script.R
