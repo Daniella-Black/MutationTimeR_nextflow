@@ -25,11 +25,11 @@ process  CloudOS_MTR_input{
     //file "*_mT.csv"
     //file "*_mV.csv"
     //file "*_CLS.csv"
-    file "outfile.txt"
+    file "*.txt"
 
     script:
     """
-    example.R ${tumour_sample_platekey} ${somatic_cnv_vcf} ${somatic_small_variants_vcf_path}
+    example.R '$tumour_sample_platekey' '$somatic_cnv_vcf' '$somatic_small_variants_vcf_path'
     """ 
     //chmod +x $PWD/CloudOS_MTR_input_script.R
     //chmod +x bin/CloudOS_MTR_input_script.R
