@@ -10,7 +10,7 @@ Channel
 
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
-    container = 'dockeraccountdani/mtrinputcloudos:latest' 
+    container = 'dockeraccountdani/mutationtimeexample:latest' 
     //containerOptions '--volume ${workflow.workDir}/bin:/'
     tag"$tumour_sample_platekey"
     publishDir "${params.outdir}", mode: 'copy'
@@ -21,11 +21,14 @@ process  CloudOS_MTR_input{
     output:
     //file "small_variants_*.vcf.gz"
     //file "cnv_*.vcf.gz"
-    file "out_*.txt"
+    file "*_vaf_expected_vaf.pdf"
+    file "*_mT.csv"
+    file "*_mV.csv"
+    file "*_CLS.csv"
 
     script:
     """
-    example.R
+    example.R tumour_sample_platekey somatic_cnv_vcf somatic_small_variants_vcf_path
     """ 
     //chmod +x $PWD/CloudOS_MTR_input_script.R
     //chmod +x bin/CloudOS_MTR_input_script.R
