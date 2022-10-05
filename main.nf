@@ -10,7 +10,7 @@ Channel
 
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
-    container = 'dockeraccountdani/mutationtimeexample:latest' 
+    container = 'dockeraccountdani/mtrinputcloudos:latest' 
     //containerOptions '--volume ${workflow.workDir}/bin:/'
     tag"$tumour_sample_platekey"
     publishDir "${params.outdir}", mode: 'copy'
