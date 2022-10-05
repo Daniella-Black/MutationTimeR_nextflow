@@ -29,7 +29,7 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    example.R '$tumour_sample_platekey' '$somatic_cnv_vcf' '$somatic_small_variants_vcf_path'
+    CloudOS_MTR_input_script.R '$tumour_sample_platekey' '$somatic_cnv_vcf' '$somatic_small_variants_vcf_path'
     """ 
     //chmod +x $PWD/CloudOS_MTR_input_script.R
     //chmod +x bin/CloudOS_MTR_input_script.R
