@@ -10,10 +10,12 @@ cnvpath <- args[2]
 vcfpath <- args[3]
 
 callsBattenberg <- read.csv(cnvpath, sep='\t')
-vcf <- readVcf(vcfpath)
+
 
 bb <- makeGRangesFromDataFrame(callsBattenberg, keep.extra.columns=TRUE)
 bb
+
+vcf <- readVcf(vcfpath)
 mt <- mutationTime(vcf, bb, n.boot=100)
 
 #######
