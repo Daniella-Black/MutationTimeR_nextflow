@@ -23,8 +23,8 @@ process  CloudOS_MTR_input{
     //file "cnv_*.vcf.gz"
     file "*_vaf_expected_vaf.pdf"
     file "*_mT.csv"
-    file "*_mV.csv"
-    file "*_CLS.csv"
+    //file "*_mV.csv"
+    //file "*_CLS.csv"
     //file "*.txt"
 
     script:
