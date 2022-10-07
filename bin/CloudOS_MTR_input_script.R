@@ -5,9 +5,9 @@ library(mg14)
 args = commandArgs(trailingOnly=TRUE)
 
 
-sample <- args[1]
-cnvpath <- args[2]
-vcfpath <- args[3]
+sample <- args[0]
+cnvpath <- args[1]
+vcfpath <- args[2]
 
 callsBattenberg <- read.csv(cnvpath, sep='\t')
 write.csv(callsBattenberg, paste0(sample, '_mT.csv'))
