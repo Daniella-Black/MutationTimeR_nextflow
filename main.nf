@@ -4,7 +4,7 @@ Channel
     .fromPath(params.inputlist)
     .ifEmpty {exit 1, "Cannot find input file : ${params.inputlist}"}
     .splitCsv(skip:1)
-    .map{tumour_sample_platekey, somatic_small_variants_vcf_path,somatic_cnv_vcf -> [tumour_sample_platekey, file(somatic_cnv_vcf), file(somatic_small_variants_vcf_path)]}
+    .map{tumour_sample_platekey,somatic_cnv_vcf,somatic_small_variants_vcf_path -> [tumour_sample_platekey, file(somatic_cnv_vcf), file(somatic_small_variants_vcf_path)]}
     .set{ ch_input }
 
 
