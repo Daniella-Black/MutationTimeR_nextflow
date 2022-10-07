@@ -32,5 +32,5 @@ dev.off()
 mt$T <- mt$T[-c(1)]
 
 write.csv(mt$T, paste0(sample,'_mT.csv'))
-write.csv(mt$V, paste0sample,'_mV.csv'))
+write.csv(mt$V, paste0(sample,'_mV.csv'))
 write.csv(mt$V$CLS, paste0(sample,'_CLS.csv'))
