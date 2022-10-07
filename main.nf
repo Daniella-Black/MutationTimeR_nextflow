@@ -21,10 +21,10 @@ process  CloudOS_MTR_input{
     output:
     //file "small_variants_*.vcf.gz"
     //file "cnv_*.vcf.gz"
-    file "*_vaf_expected_vaf.pdf"
-    file "*_mT.csv"
-    file "*_mV.csv"
-    file "*_CLS.csv"
+    file "/'$tumour_sample_platekey'/*_vaf_expected_vaf.pdf"
+    file "/'$tumour_sample_platekey'/*_mT.csv"
+    file "/'$tumour_sample_platekey'/*_mV.csv"
+    file "/'$tumour_sample_platekey'/*_CLS.csv"
     //file "*.txt"
 
     script:
