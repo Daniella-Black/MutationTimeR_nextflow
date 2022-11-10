@@ -4,9 +4,7 @@ Channel
     .fromPath(params.inputlist)
     .ifEmpty {exit 1, "Cannot find input file : ${params.inputlist}"}
     .splitCsv(skip:1)
-    //.map{tumour_sample_platekey,somatic_cnv_vcf,somatic_small_variants_vcf_path -> [tumour_sample_platekey, file(somatic_cnv_vcf), file(somatic_small_variants_vcf_path)]}
     .map{tumour_sample_platekey,sv-> [tumour_sample_platekey, file(sv)]}
-   
     .set{ ch_input }
 
 
@@ -35,6 +33,7 @@ process  CloudOS_MTR_input{
     """
     cp $sv sv_'$tumour_sample_platekey'.vcf.gz
     """ 
+     //.map{tumour_sample_platekey,somatic_cnv_vcf,somatic_small_variants_vcf_path -> [tumour_sample_platekey, file(somatic_cnv_vcf), file(somatic_small_variants_vcf_path)]}
     //CloudOS_MTR_input_script.R '$tumour_sample_platekey' '$somatic_cnv_vcf' '$somatic_small_variants_vcf_path'
     //chmod +x $PWD/CloudOS_MTR_input_script.R
     //chmod +x bin/CloudOS_MTR_input_script.R
