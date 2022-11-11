@@ -10,7 +10,8 @@ Channel
 
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
-    container = 'dockeraccountdani/mtrnf:latest' 
+    //container = 'dockeraccountdani/mtrnf:latest' 
+    container = 'dockeraccountdani/fitms2:latest' 
     //containerOptions '--volume ${workflow.workDir}/bin:/'
     tag"$tumour_sample_platekey"
     publishDir "${params.outdir}/$tumour_sample_platekey", mode: 'copy'
