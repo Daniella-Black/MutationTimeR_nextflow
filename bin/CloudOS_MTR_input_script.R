@@ -97,3 +97,21 @@ write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.
 
 #read in  the file
 sv_vcf <- VariantAnnotation::readVcf(file = cnvpath, genome = genome.v)
+# filter PASS and chromosomes
+selected_sv <- VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="PASS" | VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="MGE10kb"
+sv_vcf <- sv_vcf[selected_sv,]
+select_chrom <- as.character(GenomeInfoDb::seqnames(sv_vcf)) %in% paste0("chr",c(1:22,"X","Y"))
+sv_vcf <- sv_vcf[select_chrom,]
+
+rr <- SummarizedExperiment::rowRanges(sv_vcf)
+
+#select Canvas rows only
+selection <- grepl(names(rr),pattern = "^Canvas")
+cn_vcf <- sv_vcf[selection,]
+
+rr <- SummarizedExperiment::rowRanges(cn_vcf)
+
+#select only the copy number
+sv_size <- VariantAnnotation::info(cn_vcf)$END - BiocGenerics::start(rr)
+selection <- sv_size >= 10000
+cn_vcf <- cn_vcf[selection,]
