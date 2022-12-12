@@ -124,12 +124,12 @@ sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,1]
 sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),1]
 #sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,2]
 #sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),2]
-sv_df <- data.frame(
-             seqnames = chr,
-             start = BiocGenerics::start(rr),
-             end = VariantAnnotation::info(cn_vcf)$END,
-             total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,1],
-             minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,1] - sample_MCC,stringsAsFactors = FALSE)
+#sv_df <- data.frame(
+#             seqnames = chr,
+#             start = BiocGenerics::start(rr),
+#             end = VariantAnnotation::info(cn_vcf)$END,
+#             total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,1],
+#             minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,1] - sample_MCC,stringsAsFactors = FALSE)
              #total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,2],
              #minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,2] - sample_MCC,
              #stringsAsFactors = FALSE)
@@ -144,4 +144,4 @@ sv_df <- data.frame(
 #col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor_cn', 'clonal_frequency')
 #sv_df <- sv_df[, col_order]
 
-write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
+#write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
