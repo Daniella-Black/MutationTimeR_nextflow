@@ -25,7 +25,8 @@ e.snv <- e.snv[selected_snv,]
 # collect SNV data into a table
 rd <- SummarizedExperiment::rowRanges(e.snv)
 rgs <- IRanges::ranges(e.snv)
-vafs <- c(VariantAnnotation::info(e.snv)[,"VAF"])
+
+vcf_norm ['VAF'] <- vcf_norm ['AD_ALT']/(vcf_norm ['AD_ALT'] + vcf_norm ['AD_REF'])
 pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
 hist(vafs)
 dev.off()
