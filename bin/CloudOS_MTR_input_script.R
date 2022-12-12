@@ -14,7 +14,7 @@ genome.v="hg38"
 PR_threshold=8
 # outdir
 organ <- 'Breast'
-
+header <- read.csv(header, sep='\n', header=FALSE)
 smallvariants_VCF <- VariantAnnotation::readVcf(vcfpath,genome = genome.v)
 e.vcf <- VariantAnnotation::expand(smallvariants_VCF)
 
