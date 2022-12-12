@@ -124,12 +124,12 @@ sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,1]
 sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),1]
 #sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,2]
 #sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),2]
-#sv_df <- data.frame(
-#             seqnames = chr,
-#             start = BiocGenerics::start(rr),
-#             end = VariantAnnotation::info(cn_vcf)$END,
-#             total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,1],
-#             minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,1] - sample_MCC,stringsAsFactors = FALSE)
+sv_df <- data.frame(
+             seqnames = chr,
+             start = BiocGenerics::start(rr),
+             end = VariantAnnotation::info(cn_vcf)$END,
+             total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,1],
+             minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,1] - sample_MCC,stringsAsFactors = FALSE)
              #total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,2],
              #minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,2] - sample_MCC,
              #stringsAsFactors = FALSE)
