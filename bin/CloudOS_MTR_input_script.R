@@ -143,4 +143,4 @@ sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
 col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor_cn', 'clonal_frequency')
 sv_df <- sv_df[, col_order]
 
-write.table(sv_df,file = paste0(sampleID,"_CNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
+write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
