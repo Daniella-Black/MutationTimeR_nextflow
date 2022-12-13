@@ -68,5 +68,5 @@ for (row in 1:nrow(snvtab)){
 snvtab['VAF'] <- snvtab['AD_ALT']/(snvtab['AD_ALT'] + snvtab['AD_REF'])
 
 pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
-hist(snvtab['VAF'])
+hist(numeric(snvtab['VAF']))
 dev.off()
