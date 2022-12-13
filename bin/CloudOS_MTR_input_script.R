@@ -71,5 +71,5 @@ snvtab['VAF'] <- snvtab['AD_ALT']/(snvtab['AD_ALT'] + snvtab['AD_REF'])
 bins=seq(0,1.0,by=0.01)
 
 pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
-hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, '(', tp, ')'), xlab='VAF')
+hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, '(', tp, ')'), xlab='VAF', col='#fadadd')
 dev.off()
