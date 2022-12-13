@@ -5,6 +5,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 sampleID <- args[1]
 vcfpath <- args[2]
+tp <- args[3]
 
 genome.v="hg38"
 PR_threshold=8
@@ -67,6 +68,8 @@ for (row in 1:nrow(snvtab)){
 
 snvtab['VAF'] <- snvtab['AD_ALT']/(snvtab['AD_ALT'] + snvtab['AD_REF'])
 
+bins=seq(0,1.0,by=0.01)
+
 pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
-hist(as.numeric(unlist(snvtab['VAF'])))
+hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, '(', tp, ')'), xlab='VAF')
 dev.off()
