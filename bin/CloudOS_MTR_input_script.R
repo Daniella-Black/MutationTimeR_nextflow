@@ -2,6 +2,9 @@
 library(VariantAnnotation)
 library(MutationTimeR)
 library(mg14)
+fileConn<-file("output.txt")
+writeLines(c("Hello","World"), fileConn)
+close(fileConn)
 #args = commandArgs(trailingOnly=TRUE)
 
 
