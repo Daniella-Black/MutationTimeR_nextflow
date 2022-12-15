@@ -68,5 +68,5 @@ for (row in 1:nrow(snvtab)){
     }
 
 snvtab['VAF'] <- snvtab['AD_ALT']/(snvtab['AD_ALT'] + snvtab['AD_REF'])
-names(snvtab)[names(snvtab) == "#CHROM"] <- "chroms"
-snvtab$chroms <- as.character(snvtab$chroms)
+#names(snvtab)[names(snvtab) == "#CHROM"] <- "chroms"
+#snvtab$chroms <- as.character(snvtab$chroms)
