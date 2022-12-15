@@ -153,14 +153,17 @@ snvtab_normal <- snvtab[snvtab$V3 %in% muts_normal,]
 #######################################################################################################
 ##make the VAF histograms##
 #######################################################################################################
-
+fileConn<-file("output.txt")
+writeLines(c(nrow(snvtab), nrow(snvtab_normal)), fileConn)
+close(fileConn)
+              
 bins=seq(0,1.0,by=0.01)
 
-pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
-hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
-dev.off()
+#pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
+#hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
+#dev.off()
 
-pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
-hist(as.numeric(unlist(snvtab_normal['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
-     xlab='VAF', col='#fadadd')
-dev.off()
+#pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
+#hist(as.numeric(unlist(snvtab_normal['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
+#     xlab='VAF', col='#fadadd')
+#dev.off()
