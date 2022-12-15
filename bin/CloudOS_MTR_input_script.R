@@ -124,6 +124,10 @@ sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
 col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor_cn', 'clonal_frequency')
 sv_df <- sv_df[, col_order]
 
+              
+fileConn<-file("out.txt")
+writeLines(c("Hello","World"), fileConn)
+close(fileConn)
 ################################################################################################              
 #####select mutations in regions of normal cn only
 ################################################################################################
