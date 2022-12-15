@@ -10,7 +10,9 @@ tp <- args[3]
 
 genome.v="hg38"
 PR_threshold=8
+# outdir
 organ <- 'Breast'
+header <- read.csv(header, sep='\n', header=FALSE)
 smallvariants_VCF <- VariantAnnotation::readVcf(vcfpath,genome = genome.v)
 e.vcf <- VariantAnnotation::expand(smallvariants_VCF)
 
@@ -29,6 +31,7 @@ snvtab <- data.frame(chr=as.character(SummarizedExperiment::seqnames(e.snv)),
                      REF=as.character(rd$REF),
                      ALT=as.character(rd$ALT),
                      FILTER = VariantAnnotation::fixed(e.snv)[,"FILTER"],
+                     #VAF=VariantAnnotation::info(e.snv)[,"VAF"],
                      DP=VariantAnnotation::geno(e.snv)$DP,
                      AU=VariantAnnotation::geno(e.snv)$AU,
                      TU=VariantAnnotation::geno(e.snv)$TU,
@@ -51,6 +54,13 @@ names(snvtab)[names(snvtab) == 'chr'] <- '#CHROM'
 
 snvtab['AD_REF'] <- rep(0, nrow(snvtab))
 snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
+snvtab['FORMAT'] <- rep('DP:AD', nrow(snvtab))
+for(i in 1:2){
+  cols = c('QUAL', 'INFO')
+  i = cols[i]
+  snvtab[i] <- rep('.', nrow(snvtab))
+}
+
 
 tumour_list<- c()
 
@@ -65,10 +75,17 @@ for (row in 1:nrow(snvtab)){
       snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
     }
   }
+  tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
     }
 
+snvtab['TUMOR'] <- tumour_list
+
 snvtab['VAF'] <- snvtab['AD_ALT']/(snvtab['AD_ALT'] + snvtab['AD_REF'])
-snvtab['#CHROM'] <- as.character(snvtab['#CHROM'])
+
+snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF", "AD_ALT"))]
+
+col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
+snvtab <- snvtab[, col_order]
 
 ########################################################################################
 ##process cnv file
