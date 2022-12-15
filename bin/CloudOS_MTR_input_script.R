@@ -170,7 +170,7 @@ sv_df <- sv_df[, col_order]
 ##make the VAF histograms##
 #######################################################################################################
 fileConn<-file("output.txt")
-writeLines(c(nrow(snvtab)), fileConn)
+writeLines(c(as.character(nrow(snvtab))), fileConn)
 close(fileConn)
               
 bins=seq(0,1.0,by=0.01)
