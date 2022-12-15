@@ -70,3 +70,6 @@ for (row in 1:nrow(snvtab)){
 snvtab['VAF'] <- snvtab['AD_ALT']/(snvtab['AD_ALT'] + snvtab['AD_REF'])
 #names(snvtab)[names(snvtab) == "#CHROM"] <- "chroms"
 #snvtab$chroms <- as.character(snvtab$chroms)
+fileConn<-file("output.txt")
+writeLines(c("Hello","World"), fileConn)
+close(fileConn)
