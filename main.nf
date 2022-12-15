@@ -13,7 +13,7 @@ process  CloudOS_MTR_input{
     //container = 'dockeraccountdani/mtrnf:latest' 
     //containerOptions '--volume ${workflow.workDir}/bin:/'
     tag"$tumour_sample_platekey"
-    publishDir "${params.outdir}/$tumour_sample_platekey", mode: 'copy'
+    //publishDir "${params.outdir}/$tumour_sample_platekey", mode: 'copy'
 
     input:
     set val(tumour_sample_platekey), file(somatic_small_variants_vcf_path), file(somatic_cnv_vcf), val(tumour_purity), file(header) from ch_input
@@ -27,11 +27,12 @@ process  CloudOS_MTR_input{
     //file "*_CLS.csv"
     //file "*_SNVs.txt"
     file "*_vaf_hist_all_muts.pdf"
+    file "*_vaf_hist_normal_cn.pdf"
     //file "*_CNVs.tsv"
 
     script:
     """
-    CloudOS_MTR_input_script.R '$tumour_sample_platekey' '$somatic_small_variants_vcf_path' '$tumour_purity'
+    CloudOS_MTR_input_script.R '$tumour_sample_platekey' '$somatic_small_variants_vcf_path' '$somatic_cnv_vcf' '$tumour_purity'
     """ 
     //chmod +x $PWD/CloudOS_MTR_input_script.R
     //chmod +x bin/CloudOS_MTR_input_script.R
