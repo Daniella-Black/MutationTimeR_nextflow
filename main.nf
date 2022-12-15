@@ -29,6 +29,7 @@ process  CloudOS_MTR_input{
     //file "*_vaf_hist_all_muts.pdf"
     //file "*_vaf_hist_normal_cn.pdf"
     //file "*_CNVs.tsv"
+    file "out.txt"
 
     script:
     """
