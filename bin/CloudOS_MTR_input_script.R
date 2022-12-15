@@ -123,48 +123,44 @@ sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
 col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor_cn', 'clonal_frequency')
 sv_df <- sv_df[, col_order]
 
-              
-fileConn<-file("out.txt")
-writeLines(c("Hello","World"), fileConn)
-close(fileConn)
 ################################################################################################              
 #####select mutations in regions of normal cn only
 ################################################################################################
               
 #select only the copy number normal regions
-#cn_normal <- subset(sv_df, major_cn ==1 & minor_cn == 1)
+cn_normal <- subset(sv_df, major_cn ==1 & minor_cn == 1)
 #set up some lists to fill or iterate through
-#chr <- c('1', '2', '3', '4','5', '6', '7', '8','9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y')
-#muts_normal <- c()
-#for(chrom in chr){
-#  #to avoid iterating over all chromosomes do just one at a time - subset the vcf by mutations on the chrom of interest
-#  vcf_per_chrom = subset(snvtab, snvtab['#CHROM'] == chrom)
-#  #do the same with the cn
-#  cn_norm_per_chrom = subset(cn_normal, seqnames == chrom)
-#  if(nrow(vcf_per_chrom > 0)){
-#    for(mut in 1:nrow(vcf_per_chrom)){
-#      for(contig in 1:nrow(cn_norm_per_chrom)){
-#            if(vcf_per_chrom[mut, 'POS'] > cn_norm_per_chrom[contig, 'start'] & vcf_per_chrom[mut, 'V2'] <cn_norm_per_chrom[contig, 'end']){
-#              muts_normal <- append(muts_normal,vcf_per_chrom[mut, 'ID']) ##append the ID
-#          }
-#        }    
-#      }
-#    }
-#}
+chr <- c('1', '2', '3', '4','5', '6', '7', '8','9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y')
+muts_normal <- c()
+for(chrom in chr){
+  #to avoid iterating over all chromosomes do just one at a time - subset the vcf by mutations on the chrom of interest
+  vcf_per_chrom = subset(snvtab, snvtab['#CHROM'] == chrom)
+  #do the same with the cn
+  cn_norm_per_chrom = subset(cn_normal, seqnames == chrom)
+  if(nrow(vcf_per_chrom > 0)){
+    for(mut in 1:nrow(vcf_per_chrom)){
+      for(contig in 1:nrow(cn_norm_per_chrom)){
+            if(vcf_per_chrom[mut, 'POS'] > cn_norm_per_chrom[contig, 'start'] & vcf_per_chrom[mut, 'V2'] <cn_norm_per_chrom[contig, 'end']){
+              muts_normal <- append(muts_normal,vcf_per_chrom[mut, 'ID']) ##append the ID
+          }
+        }    
+      }
+   }
+}
 
-#snvtab_normal <- snvtab[snvtab$V3 %in% muts_normal,]    
+snvtab_normal <- snvtab[snvtab$V3 %in% muts_normal,]    
 
 #######################################################################################################
 ##make the VAF histograms##
 #######################################################################################################
 
-#bins=seq(0,1.0,by=0.01)
+bins=seq(0,1.0,by=0.01)
 
-#pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
-#hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
-#dev.off()
+pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
+hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
+dev.off()
 
-#pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
-#hist(as.numeric(unlist(snvtab_normal['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
-#     xlab='VAF', col='#fadadd')
-#dev.off()
+pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
+hist(as.numeric(unlist(snvtab_normal['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
+     xlab='VAF', col='#fadadd')
+dev.off()
