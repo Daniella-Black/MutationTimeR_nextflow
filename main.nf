@@ -25,11 +25,11 @@ process  CloudOS_MTR_input{
     //file "*_mT.csv"
     //file "*_mV.csv"
     //file "*_CLS.csv"
-    //file "*_SNVs.txt"
+    file "*_SNVs.txt"
     //file "*_vaf_hist_all_muts.pdf"
     //file "*_vaf_hist_normal_cn.pdf"
-    //file "*_CNVs.tsv"
-    file "out.txt"
+    file "*_CNVs.tsv"
+    //file "out.txt"
 
     script:
     """
