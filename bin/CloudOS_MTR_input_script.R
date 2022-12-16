@@ -144,27 +144,27 @@ sv_df <- sv_df[, col_order]
 ################################################################################################
               
 #select only the copy number normal regions
-#cn_normal <- subset(sv_df, major_cn ==1 & minor_cn == 1)
+cn_normal <- subset(sv_df, major_cn ==1 & minor_cn == 1)
 #set up some lists to fill or iterate through
-#chr <- c('1', '2', '3', '4','5', '6', '7', '8','9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y')
-#muts_normal <- c()
-#for(chrom in chr){
+chr <- c('1', '2', '3', '4','5', '6', '7', '8','9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y')
+muts_normal <- c()
+for(chrom in chr){
   #to avoid iterating over all chromosomes do just one at a time - subset the vcf by mutations on the chrom of interest
-#  vcf_per_chrom = subset(snvtab, snvtab['#CHROM'] == chrom)
+  vcf_per_chrom = subset(snvtab, snvtab['#CHROM'] == chrom)
   #do the same with the cn
-#  cn_norm_per_chrom = subset(cn_normal, seqnames == chrom)
-#  if(nrow(vcf_per_chrom > 0)){
-#    for(mut in 1:nrow(vcf_per_chrom)){
-#      for(contig in 1:nrow(cn_norm_per_chrom)){
-#            if(vcf_per_chrom[mut, 'POS'] > cn_norm_per_chrom[contig, 'start'] & vcf_per_chrom[mut, 'V2'] <cn_norm_per_chrom[contig, 'end']){
-#              muts_normal <- append(muts_normal,vcf_per_chrom[mut, 'ID']) ##append the ID
-#          }
-#        }    
-#      }
-#   }
-#}
+  cn_norm_per_chrom = subset(cn_normal, seqnames == chrom)
+  if(nrow(vcf_per_chrom > 0)){
+    for(mut in 1:nrow(vcf_per_chrom)){
+      for(contig in 1:nrow(cn_norm_per_chrom)){
+            if(vcf_per_chrom[mut, 'POS'] > cn_norm_per_chrom[contig, 'start'] & vcf_per_chrom[mut, 'V2'] <cn_norm_per_chrom[contig, 'end']){
+              muts_normal <- append(muts_normal,vcf_per_chrom[mut, 'ID']) ##append the ID
+          }
+        }    
+      }
+   }
+}
 
-#snvtab_normal <- snvtab[snvtab$V3 %in% muts_normal,]    
+snvtab_normal <- snvtab[snvtab$V3 %in% muts_normal,]    
 
 #######################################################################################################
 ##make the VAF histograms##
@@ -174,9 +174,9 @@ sv_df <- sv_df[, col_order]
 #close(fileConn)
               
 
-write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
+write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 
-write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
+write.table(snvtab_normal,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
              
 bins=seq(0,1.0,by=0.01)
 
