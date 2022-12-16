@@ -156,7 +156,7 @@ for(chrom in chr){
   if(nrow(vcf_per_chrom > 0)){
     for(mut in 1:nrow(vcf_per_chrom)){
       for(contig in 1:nrow(cn_norm_per_chrom)){
-            if(vcf_per_chrom[mut, 'POS'] > cn_norm_per_chrom[contig, 'start'] & vcf_per_chrom[mut, 'V2'] <cn_norm_per_chrom[contig, 'end']){
+            if(vcf_per_chrom[mut, 'POS'] > cn_norm_per_chrom[contig, 'start'] & vcf_per_chrom[mut, 'POS'] <cn_norm_per_chrom[contig, 'end']){
               muts_normal <- append(muts_normal,vcf_per_chrom[mut, 'ID']) ##append the ID
           }
         }    
