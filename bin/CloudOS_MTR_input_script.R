@@ -173,8 +173,7 @@ sv_df <- sv_df[, col_order]
 #writeLines(c(as.character(nrow(snvtab))), fileConn)
 #close(fileConn)
               
- 
-write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
+
 write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
 
 write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
