@@ -169,10 +169,16 @@ sv_df <- sv_df[, col_order]
 #######################################################################################################
 ##make the VAF histograms##
 #######################################################################################################
-fileConn<-file("output.txt")
-writeLines(c(as.character(nrow(snvtab))), fileConn)
-close(fileConn)
+#fileConn<-file("output.txt")
+#writeLines(c(as.character(nrow(snvtab))), fileConn)
+#close(fileConn)
               
+ 
+write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
+write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
+
+write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
+             
 bins=seq(0,1.0,by=0.01)
 
 #pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
