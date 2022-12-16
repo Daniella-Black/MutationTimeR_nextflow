@@ -81,10 +81,10 @@ snvtab['TUMOR'] <- tumour_list
 
 snvtab['VAF'] <- snvtab['AD_ALT']/(snvtab['AD_ALT'] + snvtab['AD_REF'])
 
-snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF", "AD_ALT"))]
+#snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF", "AD_ALT"))]
 
-col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
-snvtab <- snvtab[, col_order]
+#col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
+#snvtab <- snvtab[, col_order]
 
 ########################################################################################
 ##process cnv file
@@ -146,7 +146,7 @@ sv_df <- sv_df[, col_order]
 #select only the copy number normal regions
 cn_normal <- subset(sv_df, major_cn ==1 & minor_cn == 1)
 #set up some lists to fill or iterate through
-chr <- c('1', '2', '3', '4','5', '6', '7', '8','9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', 'X', 'Y')
+chr <- as.list(unique(cn_normal$seqnames))
 muts_normal <- c()
 for(chrom in chr){
   #to avoid iterating over all chromosomes do just one at a time - subset the vcf by mutations on the chrom of interest
@@ -164,7 +164,7 @@ for(chrom in chr){
    }
 }
 
-snvtab_normal <- snvtab[snvtab$V3 %in% muts_normal,]    
+snvtab_normal <- snvtab[snvtab$ID %in% muts_normal,]    
 
 #######################################################################################################
 ##make the VAF histograms##
@@ -174,17 +174,17 @@ snvtab_normal <- snvtab[snvtab$V3 %in% muts_normal,]
 #close(fileConn)
               
 
-write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
+#write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 
-write.table(snvtab_normal,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
+#write.table(snvtab_normal,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
              
 bins=seq(0,1.0,by=0.01)
 
-#pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
-#hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
-#dev.off()
+pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
+hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
+dev.off()
 
-#pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
-#hist(as.numeric(unlist(snvtab_normal['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
-#     xlab='VAF', col='#fadadd')
-#dev.off()
+pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
+hist(as.numeric(unlist(snvtab_normal['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
+     xlab='VAF', col='#fadadd')
+dev.off()
