@@ -6,7 +6,7 @@ args = commandArgs(trailingOnly=TRUE)
 sampleID <- args[1]
 vcfpath <- args[2]
 cnvpath <- args[3]
-tp <- args[3]
+tp <- args[4]
 
 genome.v="hg38"
 PR_threshold=8
