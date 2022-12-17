@@ -181,7 +181,7 @@ snvtab_normal <- snvtab[snvtab$ID %in% muts_normal,]
 #write.table(snvtab_normal,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
              
 bins=seq(0,1.0,by=0.01)
-ran_str <- stri_rand_strings(1, 5)
+ran_str <- as.character(floor(runif(1, min=0, max=10000)))
 #pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
 #hist(as.numeric(unlist(snvtab['VAF'])),  cex.main=0.5, breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
 #dev.off()
