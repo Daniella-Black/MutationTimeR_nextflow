@@ -156,9 +156,11 @@ for(chrom in chr){
   if(nrow(vcf_per_chrom > 0)){
     for(mut in 1:nrow(vcf_per_chrom)){
       for(contig in 1:nrow(cn_norm_per_chrom)){
-            if(vcf_per_chrom[mut, 'POS'] > cn_norm_per_chrom[contig, 'start'] & vcf_per_chrom[mut, 'POS'] <cn_norm_per_chrom[contig, 'end']){
-              muts_normal <- append(muts_normal,vcf_per_chrom[mut, 'ID']) ##append the ID
-          }
+            if(vcf_per_chrom[mut, 'POS'] > cn_norm_per_chrom[contig, 'start']){
+              if(vcf_per_chrom[mut, 'POS'] < cn_norm_per_chrom[contig, 'end']){
+                   muts_normal <- append(muts_normal,vcf_per_chrom[mut, 'ID']) ##append the ID
+                }
+              }
         }    
       }
    }
@@ -181,10 +183,10 @@ snvtab_normal <- snvtab[snvtab$ID %in% muts_normal,]
 bins=seq(0,1.0,by=0.01)
 
 pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
-hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
+hist(as.numeric(unlist(snvtab['VAF'])),  cex.main=0.5, breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
 dev.off()
 
 pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
-hist(as.numeric(unlist(snvtab_normal['VAF'])), breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
+hist(as.numeric(unlist(snvtab_normal['VAF'])),  cex.main=0.5, breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
      xlab='VAF', col='#fadadd')
 dev.off()
