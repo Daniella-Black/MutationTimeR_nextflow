@@ -184,11 +184,11 @@ bins=seq(0,1.0,by=0.01)
               
 x1 <- as.character(runif(1, 0,100000))
               
-pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
+pdf(file = paste0(x1, '_vaf_hist_all_muts.pdf'))
 hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, cex.main=0.5,main = paste0(x1, ' (tumour purity = ', as.character(tp), ')'), xlab='VAF', col='#fadadd')
 dev.off()
 
-pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
+pdf(file = paste0(x1, '_vaf_hist_normal_cn.pdf'))
 hist(as.numeric(unlist(snvtab_normal['VAF'])), breaks=bins, cex.main=0.5, main = paste0(x1, ' (tumour purity = ', as.character(tp), '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
      xlab='VAF', col='#fadadd')
 dev.off()
