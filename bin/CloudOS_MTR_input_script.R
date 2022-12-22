@@ -56,7 +56,7 @@ names(snvtab)[names(snvtab) == paste("CU.", sampleID_cols, ".1", sep='')] <- "C"
 names(snvtab)[names(snvtab) == paste("GU.", sampleID_cols,  ".1", sep='')] <- "G"
 names(snvtab)[names(snvtab) == 'chr'] <- '#CHROM'
 
-write.table(snvtab, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
+write.table(snvtab, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t")
 #snvtab['AD_REF'] <- rep(0, nrow(snvtab))
 #snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
 #snvtab['FORMAT'] <- rep('DP:AD', nrow(snvtab))
