@@ -121,19 +121,19 @@ cn_vcf <- cn_vcf[selection,]
 #construct cn df
 chr <- sapply(as.character(GenomeInfoDb::seqnames(cn_vcf)), function(x) ifelse(grepl(x,pattern = "^chr"),substr(x,start = 4,stop = 5),x))
 rr <- SummarizedExperiment::rowRanges(cn_vcf)
-sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,1]
-sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),1]
-#sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,2]
-#sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),2]
+#sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,1]
+#sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),1]
+sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,2]
+sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),2]
 sv_df <- data.frame(
              seqnames = chr,
              start = BiocGenerics::start(rr),
              end = VariantAnnotation::info(cn_vcf)$END,
              total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,1],
              minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,1] - sample_MCC,stringsAsFactors = FALSE)
-             #total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,2],
-             #minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,2] - sample_MCC,
-             #stringsAsFactors = FALSE)
+             total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,2],
+             minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,2] - sample_MCC,
+             stringsAsFactors = FALSE)
             
 
 sv_df$start = sv_df$start +1
@@ -146,3 +146,16 @@ col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor
 sv_df <- sv_df[, col_order]
 
 write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
+
+sv_df <- NULL
+sample_MCC <-NULL
+rr <- NULL
+sv_size <- NULL
+selection <- NULL
+cn_vcf <- NULL
+snvtab <- NULL
+rgs <-NULL
+rd <- NULL
+smallvariants_VCF <- NULL
+e.vcf <- NULL
+e.smv <- NULL
