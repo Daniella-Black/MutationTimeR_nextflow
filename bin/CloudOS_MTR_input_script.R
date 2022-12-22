@@ -123,8 +123,8 @@ chr <- sapply(as.character(GenomeInfoDb::seqnames(cn_vcf)), function(x) ifelse(g
 rr <- SummarizedExperiment::rowRanges(cn_vcf)
 sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,1]
 sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),1]
-sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,2]
-sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),2]
+#sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,2]
+#sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),2]
 sv_df <- data.frame(
              seqnames = chr,
              start = BiocGenerics::start(rr),
