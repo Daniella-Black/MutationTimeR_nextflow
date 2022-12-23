@@ -1,5 +1,6 @@
 #!/usr/local/bin/Rscript
 library(signature.tools.lib)
+library(stringr)
 #library(MutationTimeR)
 #library(mg14)
 args = commandArgs(trailingOnly=TRUE)
@@ -17,44 +18,31 @@ PR_threshold=8
 # outdir
 organ <- 'Breast'
 header <- read.csv(header, sep='\n', header=FALSE)
-smallvariants_VCF <- VariantAnnotation::readVcf(vcfpath,genome = genome.v)
-e.vcf <- VariantAnnotation::expand(smallvariants_VCF)
 
-# separate SNV and Indels
-rd <- SummarizedExperiment::rowRanges(e.vcf)
-e.snv <- e.vcf[nchar(as.character(rd$REF))==1 & nchar(as.character(rd$ALT))==1,]
-selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X","Y"))
-e.snv <- e.snv[selected_snv,]
+#read in the vcf as a table to reduce memory usage compraed to VariantAnnotation::readVCf
+snvtab <- read.table(vcfpath, sep='\t')
+##change the colnames 
+col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
+snvtab <- snvtab[, col_order]
 
+##select only snvs
+snvtab <- snvtab[nchar(as.character(snvtab$REF))==1 & nchar(as.character(snvtab$ALT))==1,]
 
-# collect SNV data into a table
-rd <- SummarizedExperiment::rowRanges(e.snv)
-rgs <- IRanges::ranges(e.snv)
-snvtab <- data.frame(chr=as.character(SummarizedExperiment::seqnames(e.snv)),
-                     POS=BiocGenerics::start(rgs),
-                     REF=as.character(rd$REF),
-                     ALT=as.character(rd$ALT),
-                     FILTER = VariantAnnotation::fixed(e.snv)[,"FILTER"],
-                     #VAF=VariantAnnotation::info(e.snv)[,"VAF"],
-                     DP=VariantAnnotation::geno(e.snv)$DP,
-                     AU=VariantAnnotation::geno(e.snv)$AU,
-                     TU=VariantAnnotation::geno(e.snv)$TU,
-                     CU=VariantAnnotation::geno(e.snv)$CU,
-                     GU=VariantAnnotation::geno(e.snv)$GU)
+##select variants which passed the filter
+snvtab <- subset(snvtab, FILTER=='PASS']
 
-##makes the index column an ID column
-snvtab <- cbind(ID = rownames(snvtab), snvtab)
-rownames(snvtab) <- 1:nrow(snvtab)
+##split TUMOR to get required values
+snvatb[c('DP', 'FDP', 'SDP', 'SUBDP', 'AU', 'CU', 'GU', 'TU')] <- str_split_fixed(snvtab$TUMOR, ':', 8)
+snvtab[c('A', 'AU_tier2')] <- str_split_fixed(snvtab$AU, ',',2)
+snvtab[c('T', 'TU_tier2')] <- str_split_fixed(snvtab$TU, ',',2)
+snvtab[c('C', 'CU_tier2')] <- str_split_fixed(snvtab$CU, ',',2)
+snvtab[c('G', 'GU_tier2')] <- str_split_fixed(snvtab$GU, ',',2)
+
+##getting the AD and DP values
+snvtab['TUMOR'] <- NULL
+tumour_list <- list()
 
 snvtab$chr = gsub("chr", "", snvtab$chr)
-sampleID_cols <- gsub("-", ".", sampleID)
-snvtab = subset(snvtab, select = -c(9,11,13,15) )
-names(snvtab)[names(snvtab) == paste('DP.', sampleID_cols, sep='')]<- "DP"
-names(snvtab)[names(snvtab) == paste("AU.", sampleID_cols, ".1",sep='')] <- "A"
-names(snvtab)[names(snvtab) == paste("TU.", sampleID_cols, ".1", sep='')] <- "T"
-names(snvtab)[names(snvtab) == paste("CU.", sampleID_cols, ".1", sep='')] <- "C"
-names(snvtab)[names(snvtab) == paste("GU.", sampleID_cols,  ".1", sep='')] <- "G"
-names(snvtab)[names(snvtab) == 'chr'] <- '#CHROM'
 
 snvtab['AD_REF'] <- rep(0, nrow(snvtab))
 snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
@@ -82,10 +70,9 @@ for (row in 1:nrow(snvtab)){
   tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
    }
 
-snvtab['TUMOR'] <- tumour_list
+snvtab['TUMOR'] <- unlist(tumour_list)
 
-snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF", "AD_ALT"))]
-
+names(snvtab)[names(snvtab) =='chr'] == '#CHROM'
 col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
 snvtab <- snvtab[, col_order]
 
