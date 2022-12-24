@@ -32,7 +32,7 @@ snvtab <- snvtab[nchar(as.character(snvtab$REF))==1 & nchar(as.character(snvtab$
 snvtab <- subset(snvtab, FILTER=='PASS')
 
 ##split TUMOR to get required values
-snvatb[c('DP', 'FDP', 'SDP', 'SUBDP', 'AU', 'CU', 'GU', 'TU')] <- str_split_fixed(snvtab$TUMOR, ':', 8)
+snvtab[c('DP', 'FDP', 'SDP', 'SUBDP', 'AU', 'CU', 'GU', 'TU')] <- str_split_fixed(snvtab$TUMOR, ':', 8)
 snvtab[c('A', 'AU_tier2')] <- str_split_fixed(snvtab$AU, ',',2)
 snvtab[c('T', 'TU_tier2')] <- str_split_fixed(snvtab$TU, ',',2)
 snvtab[c('C', 'CU_tier2')] <- str_split_fixed(snvtab$CU, ',',2)
