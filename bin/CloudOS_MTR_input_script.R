@@ -23,7 +23,7 @@ header <- read.csv(header, sep='\n', header=FALSE)
 snvtab <- read.table(vcfpath, sep='\t')
 ##change the colnames 
 col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
-snvtab <- snvtab[, col_order]
+names(snvtab) <- col_order
 
 ##select only snvs
 snvtab <- snvtab[nchar(as.character(snvtab$REF))==1 & nchar(as.character(snvtab$ALT))==1,]
