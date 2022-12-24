@@ -21,10 +21,11 @@ header <- read.csv(header, sep='\n', header=FALSE)
 
 #read in the vcf as a table to reduce memory usage compraed to VariantAnnotation::readVCf
 snvtab <- read.table(vcfpath, sep='\t')
-write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 ##change the colnames 
-#col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
-#names(snvtab) <- col_order
+col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' , 'NORMAL')
+names(snvtab) <- col_order
+write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
+
 
 ##select only snvs
 #snvtab <- snvtab[nchar(as.character(snvtab$REF))==1 & nchar(as.character(snvtab$ALT))==1,]
