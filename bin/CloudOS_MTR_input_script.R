@@ -21,12 +21,11 @@ header <- read.csv(header, sep='\n', header=FALSE)
 
 #read in the vcf as a table to reduce memory usage compraed to VariantAnnotation::readVCf
 snvtab <- read.table(vcfpath, sep='\t')
+col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR')  
 ##change the colnames 
 if(length(colnames(snvtab) == 11)){
-col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' , 'NORMAL')
-} else {
-col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR')  
-}
+  col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' , 'NORMAL')
+} 
 names(snvtab) <- col_order
 
 ##select only snvs
