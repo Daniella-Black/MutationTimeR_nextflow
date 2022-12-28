@@ -72,7 +72,7 @@ for (row in 1:nrow(snvtab)){
 
 snvtab['TUMOR'] <- unlist(tumour_list)
 
-write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=T)
+write.table(snvtab, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=T)
 #names(snvtab)[names(snvtab) =='chr'] == '#CHROM'
 #col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
 #snvtab <- snvtab[, col_order]
