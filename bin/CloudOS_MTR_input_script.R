@@ -24,8 +24,7 @@ snvtab <- read.table(vcfpath, sep='\t')
 ##change the colnames 
 if(length(colnames(snvtab) == 11)){
 col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' , 'NORMAL')
- }
-else if(length(colnames(snvtab) == 10)){
+} else {
 col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR')  
 }
 names(snvtab) <- col_order
