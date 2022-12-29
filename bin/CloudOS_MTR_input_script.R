@@ -73,7 +73,7 @@ for (row in 1:nrow(snvtab)){
   tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
 }
 
-snvtab['TUMOR'] <- unlist(tumour_list)
+snvtab['TUMOR'] <- tumour_list
 write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 
 #names(snvtab)[names(snvtab) =='chr'] <- '#CHROM'
