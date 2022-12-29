@@ -73,14 +73,16 @@ for (row in 1:nrow(snvtab)){
   tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
 }
 
-snvtab['TUMOR'] <- unlist(tumour_list)
+write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 
-names(snvtab)[names(snvtab) =='chr'] <- '#CHROM'
-col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
-snvtab <- snvtab[, col_order]
+#snvtab['TUMOR'] <- unlist(tumour_list)
 
-write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
-write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
+#names(snvtab)[names(snvtab) =='chr'] <- '#CHROM'
+#col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
+#snvtab <- snvtab[, col_order]
+
+#write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
+#write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
 
 ########################################################################################
 ##process cnv file
