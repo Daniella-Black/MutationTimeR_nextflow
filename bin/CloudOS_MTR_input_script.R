@@ -49,12 +49,14 @@ snvtab$chr = gsub("chr", "", snvtab$chr)
 
 snvtab['AD_REF'] <- rep(0, nrow(snvtab))
 snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
+
+snvtab['QUAL'] <- NULL
+snvtab['FORMAT'] <- NULL
+snvtab['INFO'] <- NULL
+
+snvtab['QUAL'] <- rep('.', nrow(snvtab))
+snvtab['INFO'] <- rep('.', nrow(snvtab))
 snvtab['FORMAT'] <- rep('DP:AD', nrow(snvtab))
-for(i in 1:2){
-  cols = c('QUAL', 'INFO')
-  i = cols[i]
-  snvtab[i] <- rep('.', nrow(snvtab))
-}
 
 write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 
