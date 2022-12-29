@@ -57,8 +57,6 @@ for(i in 1:2){
 }
 
 
-tumour_list<- c()
-
 for (row in 1:nrow(snvtab)){
   bases <- c('A', 'T', 'C', 'G')
   for(nuc in 1:4){
