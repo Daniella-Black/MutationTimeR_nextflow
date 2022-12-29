@@ -21,7 +21,7 @@ header <- read.csv(header, sep='\n', header=FALSE)
 
 #read in the vcf as a table to reduce memory usage compraed to VariantAnnotation::readVCf
 snvtab <- read.table(vcfpath, sep='\t')
-#write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
+
 col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR')  
 ##change the colnames 
 #if(length(colnames(snvtab)) == 11){
@@ -41,47 +41,48 @@ snvtab[c('T', 'TU_tier2')] <- str_split_fixed(snvtab$TU, ',',2)
 snvtab[c('C', 'CU_tier2')] <- str_split_fixed(snvtab$CU, ',',2)
 snvtab[c('G', 'GU_tier2')] <- str_split_fixed(snvtab$GU, ',',2)
 
+write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 ##getting the AD and DP values
-snvtab['TUMOR'] <- NULL
-tumour_list <- list()
+#snvtab['TUMOR'] <- NULL
+#tumour_list <- list()
 
-snvtab$chr = gsub("chr", "", snvtab$chr)
+#snvtab$chr = gsub("chr", "", snvtab$chr)
 
-snvtab['AD_REF'] <- rep(0, nrow(snvtab))
-snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
-snvtab['FORMAT'] <- rep('DP:AD', nrow(snvtab))
-for(i in 1:2){
-  cols = c('QUAL', 'INFO')
-  i = cols[i]
-  snvtab[i] <- rep('.', nrow(snvtab))
-}
-
-
-tumour_list<- c()
-
-for (row in 1:nrow(snvtab)){
-  bases <- c('A', 'T', 'C', 'G')
-  for(nuc in 1:4){
-    nuc <- bases[nuc]
-   if(snvtab$REF[row] == nuc){
-      snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, nuc])
-    }
-    else if(snvtab$ALT[row] == nuc){
-      snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
-    }
-  }
-  tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
-   }
-
-snvtab['TUMOR'] <- unlist(tumour_list)
+#snvtab['AD_REF'] <- rep(0, nrow(snvtab))
+#snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
+#snvtab['FORMAT'] <- rep('DP:AD', nrow(snvtab))
+#for(i in 1:2){
+#  cols = c('QUAL', 'INFO')
+#  i = cols[i]
+#  snvtab[i] <- rep('.', nrow(snvtab))
+#}
 
 
-names(snvtab)[names(snvtab) =='chr'] <- '#CHROM'
-col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
-snvtab <- snvtab[, col_order]
+#tumour_list<- c()
 
-write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
-write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
+#for (row in 1:nrow(snvtab)){
+#  bases <- c('A', 'T', 'C', 'G')
+#  for(nuc in 1:4){
+#   nuc <- bases[nuc]
+#   if(snvtab$REF[row] == nuc){
+#      snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, nuc])
+#    }
+#    else if(snvtab$ALT[row] == nuc){
+#      snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
+#    }
+#  }
+#  tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
+#   }
+
+#snvtab['TUMOR'] <- unlist(tumour_list)
+
+
+#names(snvtab)[names(snvtab) =='chr'] <- '#CHROM'
+#col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
+#snvtab <- snvtab[, col_order]
+
+#write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
+#write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
 
 ########################################################################################
 ##process cnv file
