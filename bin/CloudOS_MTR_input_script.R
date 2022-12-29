@@ -30,10 +30,10 @@ col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT
 names(snvtab) <- col_order
 
 ##select only snvs
-snvtab <- snvtab[nchar(as.character(snvtab$REF))==1 & nchar(as.character(snvtab$ALT))==1,]
+#snvtab <- snvtab[nchar(as.character(snvtab$REF))==1 & nchar(as.character(snvtab$ALT))==1,]
 
 ##select variants which passed the filter
-snvtab <- subset(snvtab, FILTER=='PASS')
+#snvtab <- subset(snvtab, FILTER=='PASS')
 write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 ##split TUMOR to get required values
 #snvtab[c('DP', 'FDP', 'SDP', 'SUBDP', 'AU', 'CU', 'GU', 'TU')] <- str_split_fixed(snvtab$TUMOR, ':', 8)
