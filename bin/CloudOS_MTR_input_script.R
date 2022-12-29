@@ -56,23 +56,23 @@ for(i in 1:2){
   snvtab[i] <- rep('.', nrow(snvtab))
 }
 
-
-for (row in 1:nrow(snvtab)){
-  bases <- c('A', 'T', 'C', 'G')
-  for(nuc in 1:4){
-     nuc <- bases[nuc]
-     if(snvtab$REF[row] == nuc){
-        snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, nuc])
-      }
-      else if(snvtab$ALT[row] == nuc){
-        snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
-      }
-    }
-  tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
-}
-
-snvtab['TUMOR'] <- tumour_list
 write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
+
+#for (row in 1:nrow(snvtab)){
+#  bases <- c('A', 'T', 'C', 'G')
+#  for(nuc in 1:4){
+#     nuc <- bases[nuc]
+#     if(snvtab$REF[row] == nuc){
+#        snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, nuc])
+#      }
+#      else if(snvtab$ALT[row] == nuc){
+#        snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
+#     }
+#    }
+#  tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
+#}
+
+#snvtab['TUMOR'] <- tumour_list
 
 #names(snvtab)[names(snvtab) =='chr'] <- '#CHROM'
 #col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
