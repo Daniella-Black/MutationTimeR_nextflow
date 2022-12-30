@@ -1,3 +1,6 @@
+####
+##depricated use vafs
+
 #!/usr/local/bin/Rscript
 library(signature.tools.lib)
 args = commandArgs(trailingOnly=TRUE)
