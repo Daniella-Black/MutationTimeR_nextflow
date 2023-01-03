@@ -13,67 +13,67 @@ tp <- args[4]
 header <- args[5]
 
 
-genome.v="hg38"
-PR_threshold=8
+#genome.v="hg38"
+#PR_threshold=8
 # outdir
-organ <- 'Breast'
-header <- read.csv(header, sep='\n', header=FALSE)
+#organ <- 'Breast'
+#header <- read.csv(header, sep='\n', header=FALSE)
 
 #read in the vcf as a table to reduce memory usage compraed to VariantAnnotation::readVCf
-snvtab <- read.table(vcfpath, sep='\t')
+#snvtab <- read.table(vcfpath, sep='\t')
 
-col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR')  
+#col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR')  
 ##change the colnames 
 #if(length(colnames(snvtab)) == 11){
 #  col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' , 'NORMAL')
 #} 
-names(snvtab) <- col_order
+#names(snvtab) <- col_order
 
 ##select only snvs
-snvtab <- snvtab[nchar(as.character(snvtab$REF))==1 & nchar(as.character(snvtab$ALT))==1,]
+#snvtab <- snvtab[nchar(as.character(snvtab$REF))==1 & nchar(as.character(snvtab$ALT))==1,]
 
 ##select variants which passed the filter
-snvtab <- subset(snvtab, FILTER=='PASS')
+#snvtab <- subset(snvtab, FILTER=='PASS')
 ##split TUMOR to get required values
-snvtab[c('DP', 'FDP', 'SDP', 'SUBDP', 'AU', 'CU', 'GU', 'TU')] <- str_split_fixed(snvtab$TUMOR, ':', 8)
-snvtab[c('A', 'AU_tier2')] <- str_split_fixed(snvtab$AU, ',',2)
-snvtab[c('T', 'TU_tier2')] <- str_split_fixed(snvtab$TU, ',',2)
-snvtab[c('C', 'CU_tier2')] <- str_split_fixed(snvtab$CU, ',',2)
-snvtab[c('G', 'GU_tier2')] <- str_split_fixed(snvtab$GU, ',',2)
+#snvtab[c('DP', 'FDP', 'SDP', 'SUBDP', 'AU', 'CU', 'GU', 'TU')] <- str_split_fixed(snvtab$TUMOR, ':', 8)
+#snvtab[c('A', 'AU_tier2')] <- str_split_fixed(snvtab$AU, ',',2)
+#snvtab[c('T', 'TU_tier2')] <- str_split_fixed(snvtab$TU, ',',2)
+#snvtab[c('C', 'CU_tier2')] <- str_split_fixed(snvtab$CU, ',',2)
+#snvtab[c('G', 'GU_tier2')] <- str_split_fixed(snvtab$GU, ',',2)
 
 ##getting the AD and DP values
 
-tumour_list <- list()
+#tumour_list <- list()
 
-snvtab$chr = gsub("chr", "", snvtab$chr)
+#snvtab$chr = gsub("chr", "", snvtab$chr)
 
-snvtab['TUMOR'] <- NULL
-snvtab['QUAL'] <- NULL
-snvtab['FORMAT'] <- NULL
-snvtab['INFO'] <- NULL
+#snvtab['TUMOR'] <- NULL
+#snvtab['QUAL'] <- NULL
+#snvtab['FORMAT'] <- NULL
+#snvtab['INFO'] <- NULL
 
-snvtab['QUAL'] <- rep('.', nrow(snvtab))
-snvtab['INFO'] <- rep('.', nrow(snvtab))
-snvtab['FORMAT'] <- rep('DP:AD', nrow(snvtab))
+#snvtab['QUAL'] <- rep('.', nrow(snvtab))
+#snvtab['INFO'] <- rep('.', nrow(snvtab))
+#snvtab['FORMAT'] <- rep('DP:AD', nrow(snvtab))
 
-snvtab['AD_REF'] <- rep(0, nrow(snvtab))
-snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
+#snvtab['AD_REF'] <- rep(0, nrow(snvtab))
+#snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
 
-for (row in 1:nrow(snvtab)){
-  bases <- c('A', 'T', 'C', 'G')
-  for(nuc in 1:4){
-    nuc <- bases[nuc]
-    if(snvtab$REF[row] == nuc){
-      snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, nuc])
-    }
-    else if(snvtab$ALT[row] == nuc){
-      snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
-    }
-  }
-  tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
-    }
+#for (row in 1:nrow(snvtab)){
+#  bases <- c('A', 'T', 'C', 'G')
+#  for(nuc in 1:4){
+#    nuc <- bases[nuc]
+#    if(snvtab$REF[row] == nuc){
+#      snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, nuc])
+#    }
+#    else if(snvtab$ALT[row] == nuc){
+#      snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
+#    }
+#  }
+#  tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
+#    }
 
-write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
+#write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 
 #snvtab['TUMOR'] <- unlist(tumour_list)
 
@@ -139,15 +139,3 @@ sv_df <- sv_df[, col_order]
 
 write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
 
-sv_df <- NULL
-sample_MCC <-NULL
-rr <- NULL
-sv_size <- NULL
-selection <- NULL
-cn_vcf <- NULL
-snvtab <- NULL
-rgs <-NULL
-rd <- NULL
-smallvariants_VCF <- NULL
-e.vcf <- NULL
-e.smv <- NULL
