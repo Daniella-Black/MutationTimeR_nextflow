@@ -13,8 +13,8 @@ tp <- args[4]
 header <- args[5]
 
 
-genome.v="hg38"
-PR_threshold=8
+genome.v <- "hg38"
+PR_threshold <- 8
 # outdir
 organ <- 'Breast'
 #header <- read.csv(header, sep='\n', header=FALSE)
