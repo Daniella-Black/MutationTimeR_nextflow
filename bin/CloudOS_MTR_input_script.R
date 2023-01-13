@@ -181,7 +181,7 @@ snvtab_normal <- snvtab[snvtab$ID %in% muts_normal,]
 
 #write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 
-#write.table(snvtab_normal,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
+write.table(snvtab_normal,file = paste0(sampleID,"_snvtab_normal_with_VAF.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
              
 bins=seq(0,1.0,by=0.01)
 ran_str <- as.character(floor(runif(1, min=0, max=10000)))
