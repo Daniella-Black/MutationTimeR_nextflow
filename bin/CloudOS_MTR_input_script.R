@@ -183,13 +183,14 @@ snvtab_normal <- snvtab[snvtab$ID %in% muts_normal,]
 
 write.table(snvtab_normal,file = paste0(sampleID,"_snvtab_normal_with_VAF.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
              
-bins=seq(0,1.0,by=0.01)
-ran_str <- as.character(floor(runif(1, min=0, max=10000)))
+#bins=seq(0,1.0,by=0.01)
+#ran_str <- as.character(floor(runif(1, min=0, max=10000)))
 #pdf(file = paste0(sampleID, '_vaf_hist_all_muts.pdf'))
 #hist(as.numeric(unlist(snvtab['VAF'])),  cex.main=0.5, breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, ')'), xlab='VAF', col='#fadadd')
 #dev.off()
 
-pdf(file = paste0(ran_str, '_vaf_hist_normal_cn.pdf'))
-hist(as.numeric(unlist(snvtab_normal['VAF'])),  cex.main=0.5, breaks=bins, main = paste0(ran_str, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
+#pdf(file = paste0(ran_str, '_vaf_hist_normal_cn.pdf'))
+pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
+hist(as.numeric(unlist(snvtab_normal['VAF'])),  cex.main=0.5, breaks=bins, main = paste0(sampleID, ' (tumour purity = ', tp, '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
      xlab='VAF', col='#fadadd')
 dev.off()
