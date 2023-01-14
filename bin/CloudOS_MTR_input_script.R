@@ -182,7 +182,7 @@ write.table(snvtab_normal,file = paste0(sampleID,"_snvtab_normal_with_VAF.txt"),
 
 #write.table(snvtab_normal,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
              
-#bins=seq(0,1.0,by=0.01)
+bins=seq(0,1.0,by=0.01)
               
 #x1 <- as.character(runif(1, 0,100000))
               
