@@ -101,7 +101,7 @@ genome.v="hg38"
 sv_vcf <- VariantAnnotation::readVcf(file = cnvpath, genome = genome.v)
 # filter PASS and chromosomes
 #selected_sv <- VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="PASS" | VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="MGE10kb"
-sv_vcf <- sv_vcf[selected_sv,]
+#sv_vcf <- sv_vcf[selected_sv,]
 select_chrom <- as.character(GenomeInfoDb::seqnames(sv_vcf)) %in% paste0("chr",c(1:22,"X","Y"))
 sv_vcf <- sv_vcf[select_chrom,]
 
