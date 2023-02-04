@@ -30,6 +30,7 @@ process  CloudOS_MTR_input{
     //file "*_CLS.csv"
     //file "*_SNVs.txt"
     file "*_CNVs.tsv"
+    file "*_unique_filter_fields.tsv"
 
     script:
     """
