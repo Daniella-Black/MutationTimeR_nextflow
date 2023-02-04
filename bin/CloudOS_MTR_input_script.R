@@ -13,7 +13,7 @@ header <- args[5]
 
 
 genome.v="hg38"
-#PR_threshold=8
+PR_threshold=8
 # outdir
 #organ <- 'Breast'
 #header <- read.csv(header, sep='\n', header=FALSE)
@@ -145,5 +145,12 @@ sv_df['clonal_frequency'] <- rep(as.numeric(tp)/100, nrow(sv_df))
 sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
 col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor_cn', 'clonal_frequency')
 sv_df <- sv_df[, col_order]
+              
 
+##out the unique values of the filter column to a table to check what the possible values are in v2 canvas
+check_filter_fields = data.frame(unique(rr$FILTER))
+colnames(check_filter_fields) <- sampleID
+
+              
+write.table(check_filter_fields, file=paste0(sampleID,'_unique_filter_fields.tsv'),sep = "\t",quote = F,col.names = T,row.names = F)
 write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
