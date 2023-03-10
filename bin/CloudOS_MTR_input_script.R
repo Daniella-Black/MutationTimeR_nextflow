@@ -157,4 +157,4 @@ colnames(check_filter_fields) <- sampleID
 
               
 write.table(check_filter_fields, file=paste0(sampleID,'_unique_filter_fields.tsv'),sep = "\t",quote = F,col.names = T,row.names = F)
-write.table(sv_df,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
+write.table(sv_df,file = paste0(sampleID, "_", organ "_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
