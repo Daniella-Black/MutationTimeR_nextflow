@@ -6,10 +6,11 @@ args = commandArgs(trailingOnly=TRUE)
 
 
 sampleID <- args[1]
-vcfpath <- args[2]
+#vcfpath <- args[2]
+organ <-args[2
 cnvpath <- args[3]
 tp <- args[4]
-header <- args[5]
+#header <- args[5]
 
 
 genome.v="hg38"
@@ -141,7 +142,10 @@ sv_df$start = sv_df$start +1
 sv_df$width = sv_df$end - sv_df$start
 sv_df$major_cn = sv_df$total.copy.number.inTumour - sv_df$minor_cn
 sv_df['strand'] <- rep('*', nrow(sv_df))
-sv_df['clonal_frequency'] <- rep(as.numeric(tp)/100, nrow(sv_df))
+if tp != 'NaN':              
+  sv_df['clonal_frequency'] <- rep(as.numeric(tp)/100, nrow(sv_df))
+else:
+  sv_df['clonal_frequency'] <- 'NaN'     
 sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
 col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor_cn', 'clonal_frequency')
 sv_df <- sv_df[, col_order]
