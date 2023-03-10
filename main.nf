@@ -4,7 +4,7 @@ Channel
     .fromPath(params.inputlist)
     .ifEmpty {exit 1, "Cannot find input file : ${params.inputlist}"}
     .splitCsv(skip:1)
-    .map{tumour_sample_platekey,somatic_small_variants_vcf_path, somatic_cnv_vcf, tumour_purity, header -> [tumour_sample_platekey, file(somatic_small_variants_vcf_path),  file(somatic_cnv_vcf),tumour_purity, file(header)]}
+    .map{tumour_sample_platekey,organ, somatic_cnv_vcf, tumour_purity -> [tumour_sample_platekey, organ,  file(somatic_cnv_vcf),tumour_purity]}
     .set{ ch_input }
 
 
@@ -19,7 +19,7 @@ process  CloudOS_MTR_input{
     maxRetries 3
 
     input:
-    set val(tumour_sample_platekey), file(somatic_small_variants_vcf_path), file(somatic_cnv_vcf), val(tumour_purity), file(header)  from ch_input
+    set val(tumour_sample_platekey), val(organ), file(somatic_cnv_vcf), val(tumour_purity) from ch_input
 
     output:
     //file "small_variants_*.vcf.gz"
@@ -34,8 +34,9 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    CloudOS_MTR_input_script.R '$tumour_sample_platekey' '$somatic_small_variants_vcf_path' '$somatic_cnv_vcf' '$tumour_purity' '$header'
+    CloudOS_MTR_input_script.R '$tumour_sample_platekey' '$organ' '$somatic_cnv_vcf' '$tumour_purity' 
     """ 
+    // .map{tumour_sample_platekey,somatic_small_variants_vcf_path, somatic_cnv_vcf, tumour_purity, header -> [tumour_sample_platekey, file(somatic_small_variants_vcf_path),  file(somatic_cnv_vcf),tumour_purity, file(header)]}
     //CloudOS_MTR_input_script.R '$tumour_sample_platekey' '$somatic_small_variants_vcf_path' '$somatic_cnv_vcf' '$tumour_purity' '$header' 
     //chmod +x $PWD/CloudOS_MTR_input_script.R
     //chmod +x bin/CloudOS_MTR_input_script.R
