@@ -125,7 +125,7 @@ sv_df <- data.frame(
              minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,1] - sample_MCC,stringsAsFactors = FALSE)
              #total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,2],
              #minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,2] - sample_MCC,
-             stringsAsFactors = FALSE)
+             #stringsAsFactors = FALSE)
             
 
 sv_df$start = sv_df$start +1
