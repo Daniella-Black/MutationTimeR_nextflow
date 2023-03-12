@@ -134,8 +134,7 @@ sv_df$major_cn = sv_df$total.copy.number.inTumour - sv_df$minor_cn
 sv_df['strand'] <- rep('*', nrow(sv_df))
 if(tp != 'NaN'){
   sv_df['clonal_frequency'] <- rep(as.numeric(tp)/100, nrow(sv_df))
-  }
-else{
+  } else {
   sv_df['clonal_frequency'] <- rep('NaN', nrow(sv_df))
   }
 sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
