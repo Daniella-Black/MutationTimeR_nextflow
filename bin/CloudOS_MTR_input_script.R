@@ -7,7 +7,7 @@ args = commandArgs(trailingOnly=TRUE)
 
 sampleID <- args[1]
 #vcfpath <- args[2]
-organ <-args[2
+organ <-args[2]
 cnvpath <- args[3]
 tp <- args[4]
 #header <- args[5]
