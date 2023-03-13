@@ -1,4 +1,6 @@
 #!/usr/local/bin/Rscript
+
+####this script is the correct one to use to make mtr input vcfs with somatic_small_variants_annotation_vcf files
 library(signature.tools.lib)
 library(stringr)
 #library(MutationTimeR)
@@ -36,7 +38,7 @@ snvtab <- snvtab[nchar(as.character(snvtab$REF))==1 & nchar(as.character(snvtab$
 snvtab <- subset(snvtab, FILTER=='PASS')
 
 ##split TUMOR to get required values
-snvtab[c('DP', 'FDP', 'SDP', 'SUBDP', 'AU', 'CU', 'GU', 'TU')] <- str_split_fixed(snvtab$TUMOR, ':', 8)
+snvtab[c('GU', 'SDP', 'TU', 'FDP', 'AU', 'CU', 'SUBDP', 'DP')] <- str_split_fixed(snvtab$TUMOR, ':', 8)
 snvtab[c('A', 'AU_tier2')] <- str_split_fixed(snvtab$AU, ',',2)
 snvtab[c('T', 'TU_tier2')] <- str_split_fixed(snvtab$TU, ',',2)
 snvtab[c('C', 'CU_tier2')] <- str_split_fixed(snvtab$CU, ',',2)
@@ -47,6 +49,13 @@ snvtab[c('G', 'GU_tier2')] <- str_split_fixed(snvtab$GU, ',',2)
 tumour_list <- list()
 
 snvtab$chr = gsub("chr", "", snvtab$chr)
+
+chroms <- c("1",  "10","11", "12", "13", "14", "15", "16", "17", "18", "19", "2",  "20", "21", "22", "3",  "4" , "5", "6",  "7",  "8","9" ,"X", "Y")
+
+for(i in 1:nrow(snvtab)){
+  if(is.element(as.character(snvtab$chr[i]), chroms) != TRUE){
+    snvtab <- snvtab[-c(i), ]
+  }
 
 snvtab['TUMOR'] <- NULL
 snvtab['QUAL'] <- NULL
@@ -63,12 +72,11 @@ snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
 for (row in 1:nrow(snvtab)){
   bases <- c('A', 'T', 'C', 'G')
   for(nuc in 1:4){
-    nuc <- bases[nuc]
-    if(snvtab$REF[row] == nuc){
-      snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, nuc])
+    if(snvtab$REF[row] == bases[nuc]){
+      snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, bases[nuc]])
     }
     else if(snvtab$ALT[row] == nuc){
-      snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
+      snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, bases[nuc]])
     }
   }
   tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
