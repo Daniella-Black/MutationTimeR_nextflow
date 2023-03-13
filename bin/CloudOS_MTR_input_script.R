@@ -1,11 +1,11 @@
 #!/usr/local/bin/Rscript
-
-####this script is the correct one to use to make mtr input vcfs with somatic_small_variants_annotation_vcf files
 library(signature.tools.lib)
 library(stringr)
 #library(MutationTimeR)
 #library(mg14)
 args = commandArgs(trailingOnly=TRUE)
+
+####this script is the correct one to use to make mtr input vcfs with somatic_small_variants_annotation_vcf files
 
 
 sampleID <- args[1]
@@ -50,12 +50,12 @@ tumour_list <- list()
 
 snvtab$chr = gsub("chr", "", snvtab$chr)
 
-chroms <- c("1",  "10","11", "12", "13", "14", "15", "16", "17", "18", "19", "2",  "20", "21", "22", "3",  "4" , "5", "6",  "7",  "8","9" ,"X", "Y")
+#chroms <- c("1",  "10","11", "12", "13", "14", "15", "16", "17", "18", "19", "2",  "20", "21", "22", "3",  "4" , "5", "6",  "7",  "8","9" ,"X", "Y")
 
-for(i in 1:nrow(snvtab)){
-  if(is.element(as.character(snvtab$chr[i]), chroms) != TRUE){
-    snvtab <- snvtab[-c(i), ]
-  }
+#for(i in 1:nrow(snvtab)){
+#  if(is.element(as.character(snvtab$chr[i]), chroms) != TRUE){
+#    snvtab <- snvtab[-c(i), ]
+#  }
 
 snvtab['TUMOR'] <- NULL
 snvtab['QUAL'] <- NULL
