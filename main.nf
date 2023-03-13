@@ -10,9 +10,7 @@ Channel
 
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
-    maxForks 900
     errorStrategy 'ignore'
-    maxRetries 3
     //container = 'dockeraccountdani/mtrnf:latest' 
     //containerOptions '--volume ${workflow.workDir}/bin:/'
     tag"$tumour_sample_platekey"
