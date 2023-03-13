@@ -137,7 +137,7 @@ if(tp != 'NaN'){
   } else {
   sv_df['clonal_frequency'] <- rep('NaN', nrow(sv_df))
   }
-sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
+#sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
 col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor_cn', 'clonal_frequency')
 sv_df <- sv_df[, col_order]
 
