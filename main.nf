@@ -27,6 +27,7 @@ process  CloudOS_MTR_input{
     //file "*_mV.csv"
     //file "*_CLS.csv"
     file "*_SNVs.txt"
+    file  "*_check_column_count.txt"
     //file "*_CNVs.tsv"
 
     script:
