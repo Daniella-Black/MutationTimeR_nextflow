@@ -31,8 +31,7 @@ if(length(colnames(snvtab)) != 11){
   close(fileConn)
   snvtab = data.frame()
   write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"))
-}
-else{
+} else {
   col_order <- c("chr", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'NORMAL' , 'TUMOR')
   fileConn<-file(paste0(sampleID, "_check_column_count.txt"))
   writeLines("correct_column_number", fileConn)
