@@ -7,7 +7,9 @@ sampleID <- args[1]
 vcfpath <- args[2]
 cnvpath <- args[3]
 tp <- args[4]
+header <- args[5]
 
+header <- read.csv(header, sep='\n', header=FALSE)
 genome.v="hg38"
 PR_threshold=8
 # outdir
@@ -85,8 +87,8 @@ snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF
 col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
 snvtab <- snvtab[, col_order]
 
-
-write.table(snvtab,file = paste0(sampleID,"_mutationtimer_input_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
+write.table(header, file = paste0(sampleID,"_mutationtimer_input_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
+write.table(snvtab,file = paste0(sampleID,"_mutationtimer_input_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
 ########################################################################################
 ##process cnv file
 ########################################################################################
