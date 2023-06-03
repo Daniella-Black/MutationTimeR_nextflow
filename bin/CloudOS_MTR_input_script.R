@@ -43,8 +43,8 @@ rownames(snvtab) <- 1:nrow(snvtab)
 
 snvtab$chr = gsub("chr", "", snvtab$chr)
 sampleID_cols <- gsub("-", ".", sampleID)
-snvtab = subset(snvtab, select = -c(9,11,13,15) )
-names(snvtab)[names(snvtab) == sampleID_cols]<- "DP"
+
+names(snvtab)[names(snvtab) == paste0("DP.", sampleID_cols)]<- "DP"
 names(snvtab)[names(snvtab) == paste("AU.", sampleID_cols, ".1",sep='')] <- "A"
 names(snvtab)[names(snvtab) == paste("TU.", sampleID_cols, ".1", sep='')] <- "T"
 names(snvtab)[names(snvtab) == paste("CU.", sampleID_cols, ".1", sep='')] <- "C"
@@ -79,13 +79,14 @@ for (row in 1:nrow(snvtab)){
 
 snvtab['TUMOR'] <- tumour_list
 
-snvtab['VAF'] <- snvtab['AD_ALT']/(snvtab['AD_ALT'] + snvtab['AD_REF'])
 
-#snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF", "AD_ALT"))]
+snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF", "AD_ALT"))]
 
-#col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
-#snvtab <- snvtab[, col_order]
+col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
+snvtab <- snvtab[, col_order]
 
+
+write.table(snvtab,file = paste0(sampleID,"_mutationtimer_input_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
 ########################################################################################
 ##process cnv file
 ########################################################################################
@@ -107,9 +108,9 @@ cn_vcf <- sv_vcf[selection,]
 rr <- SummarizedExperiment::rowRanges(cn_vcf)
 
 #select only the copy number
-sv_size <- VariantAnnotation::info(cn_vcf)$END - BiocGenerics::start(rr)
-selection <- sv_size >= 10000
-cn_vcf <- cn_vcf[selection,]
+#sv_size <- VariantAnnotation::info(cn_vcf)$END - BiocGenerics::start(rr)
+#selection <- sv_size >= 10000
+#cn_vcf <- cn_vcf[selection,]
 
 
 #construct cn df
@@ -139,58 +140,7 @@ sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
 col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor_cn', 'clonal_frequency')
 sv_df <- sv_df[, col_order]
 
-################################################################################################              
-#####select mutations in regions of normal cn only
-################################################################################################
-              
-#select only the copy number normal regions
-cn_normal <- subset(sv_df, major_cn ==1 & minor_cn == 1)
-#set up some lists to fill or iterate through
-chr <- as.list(unique(cn_normal$seqnames))
-muts_normal <- c()
-for(chrom in chr){
-  #to avoid iterating over all chromosomes do just one at a time - subset the vcf by mutations on the chrom of interest
-  vcf_per_chrom = subset(snvtab, snvtab['#CHROM'] == chrom)
-  #do the same with the cn
-  cn_norm_per_chrom = subset(cn_normal, seqnames == chrom)
-  if(nrow(vcf_per_chrom > 0)){
-    for(mut in 1:nrow(vcf_per_chrom)){
-      for(contig in 1:nrow(cn_norm_per_chrom)){
-            if(vcf_per_chrom[mut, 'POS'] > cn_norm_per_chrom[contig, 'start']){
-              if(vcf_per_chrom[mut, 'POS'] < cn_norm_per_chrom[contig, 'end']){
-                muts_normal <- append(muts_normal,vcf_per_chrom[mut, 'ID']) ##append the ID
-                }
-              }
-        }    
-      }
-   }
-}
 
-snvtab_normal <- snvtab[snvtab$ID %in% muts_normal,]    
 
-#######################################################################################################
-##make the VAF histograms##
-#######################################################################################################
-#fileConn<-file("output.txt")
-#writeLines(c(as.character(nrow(snvtab))), fileConn)
-#close(fileConn)
-              
-
-write.table(snvtab_normal,file = paste0(sampleID,"_snvtab_normal_with_VAF.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
+write.table(sv_df,file = paste0(sampleID,"_mutationtimer_input_CNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
              
-#write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
-
-#write.table(snvtab_normal,file = paste0(sampleID,"_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
-             
-bins=seq(0,1.0,by=0.01)
-              
-#x1 <- as.character(runif(1, 0,100000))
-              
-#pdf(file = paste0(x1, '_vaf_hist_all_muts.pdf'))
-#hist(as.numeric(unlist(snvtab['VAF'])), breaks=bins, cex.main=0.5,main = paste0(x1, ' (tumour purity = ', as.character(tp), ')'), xlab='VAF', col='#fadadd')
-#dev.off()
-
-pdf(file = paste0(sampleID, '_vaf_hist_normal_cn.pdf'))
-hist(as.numeric(unlist(snvtab_normal['VAF'])), breaks=bins, cex.main=0.5, main = paste0(sampleID, ' (tumour purity = ', as.character(tp), '), ',  '\n mutations in diploid regions = ', nrow(snvtab_normal), '/', nrow(snvtab)), 
-     xlab='VAF', col='#fadadd')
-dev.off()
