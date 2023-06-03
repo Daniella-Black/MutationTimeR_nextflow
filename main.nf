@@ -23,6 +23,6 @@ process  CloudOS_MTR_input{
 
     script:
     """
-    CloudOS_MTR_input_script.R '$tumour_sample_platekey' '$somatic_small_variants_vcf_path' '$somatic_cnv_vcf' '$tumour_purity'
+    CloudOS_MTR_input_script.R '$tumour_sample_platekey' '$somatic_small_variants_vcf_path' '$somatic_cnv_vcf' '$tumour_purity' '$header'
     """ 
 }
