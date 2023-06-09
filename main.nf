@@ -17,10 +17,10 @@ process  CloudOS_MTR_input{
     set val(tumour_sample_platekey), file(somatic_sv_vcf) from ch_input
 
     output:
-    file "somatic_sv_vcf_*.vcf.gz"
+    file "somatic_sv_vcf_*"
     
     script:
     """
-    cp $somatic_sv_vcf somatic_sv_vcf_'$tumour_sample_platekey'.vcf.gz
+    cp $somatic_sv_vcf somatic_sv_vcf_'$tumour_sample_platekey'
     """ 
 }
