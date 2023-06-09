@@ -21,6 +21,6 @@ process  CloudOS_MTR_input{
     
     script:
     """
-    cp $somatic_sv_vcf somatic_sv_vcf_'$tumour_sample_platekey'
+    cp $somatic_sv_vcf somatic_sv_vcf_'$tumour_sample_platekey'.vcf.gz'
     """ 
 }
