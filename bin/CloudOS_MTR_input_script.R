@@ -98,16 +98,16 @@ write.table(snvtab,file = paste0(sampleID,"_mutationtimer_input_SNVs.txt"),sep =
 ##process cnv file
 ########################################################################################
 
+########################################################################################
+##process cnv file
+########################################################################################
+
 #read in  the file
 sv_vcf <- VariantAnnotation::readVcf(file = cnvpath, genome = genome.v)
 # filter PASS and chromosomes
 #selected_sv <- VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="PASS" | VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="MGE10kb"
-sv_vcf <- sv_vcf[selected_sv,]
-if(sex == 'FEMALE'){
-select_chrom <- as.character(GenomeInfoDb::seqnames(sv_vcf)) %in% paste0("chr",c(1:22,"X"))
-  }else{
-  select_chrom <- as.character(GenomeInfoDb::seqnames(sv_vcf)) %in% paste0("chr",c(1:22,"X","Y"))
-  }
+#sv_vcf <- sv_vcf[selected_sv,]
+select_chrom <- as.character(GenomeInfoDb::seqnames(sv_vcf)) %in% paste0("chr",c(1:22,"X","Y"))
 sv_vcf <- sv_vcf[select_chrom,]
 
 rr <- SummarizedExperiment::rowRanges(sv_vcf)
@@ -137,21 +137,27 @@ sv_df <- data.frame(
              end = VariantAnnotation::info(cn_vcf)$END,
              total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,1],
              minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,1] - sample_MCC,stringsAsFactors = FALSE)
-             #total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,2],
-             #minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,2] - sample_MCC,
-             #stringsAsFactors = FALSE)
+#             #total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,2],
+#             #minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,2] - sample_MCC,
+#             #stringsAsFactors = FALSE)
             
 
 sv_df$start = sv_df$start +1
 sv_df$width = sv_df$end - sv_df$start
 sv_df$major_cn = sv_df$total.copy.number.inTumour - sv_df$minor_cn
 sv_df['strand'] <- rep('*', nrow(sv_df))
-sv_df['clonal_frequency'] <- rep(as.numeric(tp)/100, nrow(sv_df))
+if(tp != 'NaN') {
+  sv_df['clonal_frequency'] <- rep(as.numeric(tp)/100, nrow(sv_df)) } else {
+  sv_df['clonal_frequency'] <- rep('NaN', nrow(sv_df)) }
 sv_df <- sv_df[ , -which(names(sv_df) %in% c("total.copy.number.inTumour"))]
 col_order <- c('seqnames', 'start', 'end', 'width', 'strand', 'major_cn', 'minor_cn', 'clonal_frequency')
 sv_df <- sv_df[, col_order]
+              
 
+##out the unique values of the filter column to a table to check what the possible values are in v2 canvas
+check_filter_fields = data.frame(unique(rr$FILTER))
+colnames(check_filter_fields) <- sampleID
 
-
-write.table(sv_df,file = paste0(sampleID,"_mutationtimer_input_CNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F)
-             
+              
+write.table(check_filter_fields, file=paste0(sampleID,'_unique_filter_fields.tsv'),sep = "\t",quote = F,col.names = T,row.names = F)
+write.table(sv_df,file = paste0(sampleID, "_", organ, "_CNVs.tsv"),sep = "\t",quote = F,col.names = T,row.names = F)
