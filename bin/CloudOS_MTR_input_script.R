@@ -8,6 +8,7 @@ vcfpath <- args[2]
 cnvpath <- args[3]
 tp <- args[4]
 header <- args[5]
+sex <- args[6]
 
 header <- read.csv(header, sep='\n', header=FALSE)
 genome.v="hg38"
@@ -20,7 +21,11 @@ e.vcf <- VariantAnnotation::expand(smallvariants_VCF)
 # separate SNV and Indels
 rd <- SummarizedExperiment::rowRanges(e.vcf)
 e.snv <- e.vcf[nchar(as.character(rd$REF))==1 & nchar(as.character(rd$ALT))==1,]
-selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X","Y"))
+if(sex == 'FEMALE'){
+selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X"))
+  }else{
+selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X", "Y"))
+  }
 e.snv <- e.snv[selected_snv,]
 
 
@@ -96,7 +101,7 @@ write.table(snvtab,file = paste0(sampleID,"_mutationtimer_input_SNVs.txt"),sep =
 #read in  the file
 sv_vcf <- VariantAnnotation::readVcf(file = cnvpath, genome = genome.v)
 # filter PASS and chromosomes
-selected_sv <- VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="PASS" | VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="MGE10kb"
+#selected_sv <- VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="PASS" | VariantAnnotation::fixed(sv_vcf)[,"FILTER"]=="MGE10kb"
 sv_vcf <- sv_vcf[selected_sv,]
 select_chrom <- as.character(GenomeInfoDb::seqnames(sv_vcf)) %in% paste0("chr",c(1:22,"X","Y"))
 sv_vcf <- sv_vcf[select_chrom,]
@@ -110,9 +115,9 @@ cn_vcf <- sv_vcf[selection,]
 rr <- SummarizedExperiment::rowRanges(cn_vcf)
 
 #select only the copy number
-#sv_size <- VariantAnnotation::info(cn_vcf)$END - BiocGenerics::start(rr)
-#selection <- sv_size >= 10000
-#cn_vcf <- cn_vcf[selection,]
+sv_size <- VariantAnnotation::info(cn_vcf)$END - BiocGenerics::start(rr)
+selection <- sv_size >= 10000
+cn_vcf <- cn_vcf[selection,]
 
 
 #construct cn df
