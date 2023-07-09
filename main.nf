@@ -20,8 +20,9 @@ process  CloudOS_MTR_input{
     set val(tumour_sample_platekey), file(somatic_small_variants_vcf_path), file(somatic_cnv_vcf), val(tumour_purity), file(header) from ch_input
 
     output:
-    file "*_mutationtimer_input_CNVs.txt"
-    file "*_mutationtimer_input_SNVs.txt"
+    file "*_CNVs.txt"
+    file "*_SNVs.txt"
+    file '*_unique_filter_fields.tsv'
 
 
     script:
