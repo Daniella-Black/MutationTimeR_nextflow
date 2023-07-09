@@ -92,8 +92,8 @@ snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF
 col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
 snvtab <- snvtab[, col_order]
 
-write.table(header, file = paste0(sampleID,"_mutationtimer_input_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
-write.table(snvtab,file = paste0(sampleID,"_mutationtimer_input_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
+write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
+write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
 ########################################################################################
 ##process cnv file
 ########################################################################################
