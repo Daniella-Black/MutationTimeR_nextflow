@@ -8,7 +8,7 @@ vcfpath <- args[2]
 cnvpath <- args[3]
 tp <- args[4]
 header <- args[5]
-sex <- args[6]
+#sex <- args[6]
 
 header <- read.csv(header, sep='\n', header=FALSE)
 genome.v="hg38"
@@ -21,11 +21,11 @@ e.vcf <- VariantAnnotation::expand(smallvariants_VCF)
 # separate SNV and Indels
 rd <- SummarizedExperiment::rowRanges(e.vcf)
 e.snv <- e.vcf[nchar(as.character(rd$REF))==1 & nchar(as.character(rd$ALT))==1,]
-if(sex == 'FEMALE'){
+#if(sex == 'FEMALE'){
 selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X"))
-  }else{
-selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X", "Y"))
-  }
+#  }else{
+#selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X", "Y"))
+#  }
 e.snv <- e.snv[selected_snv,]
 
 
