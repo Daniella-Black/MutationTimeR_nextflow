@@ -11,9 +11,9 @@ Channel
 //run the script to make MTR input on above file paths
 process  CloudOS_MTR_input{
     tag"$tumour_sample_platekey"
-    maxForks 900
-    errorStrategy 'ignore'
-    maxRetries 3
+    //maxForks 900
+    //errorStrategy 'ignore'
+    //maxRetries 3
     publishDir "${params.outdir}/$tumour_sample_platekey", mode: 'copy'
 
     input:
