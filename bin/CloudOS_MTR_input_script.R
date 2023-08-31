@@ -8,92 +8,93 @@ vcfpath <- args[2]
 cnvpath <- args[3]
 tp <- args[4]
 header <- args[5]
+organ <- args[6]
 #sex <- args[6]
 
-header <- read.csv(header, sep='\n', header=FALSE)
+#header <- read.csv(header, sep='\n', header=FALSE)
 genome.v="hg38"
 PR_threshold=8
 # outdir
-organ <- 'Breast'
-smallvariants_VCF <- VariantAnnotation::readVcf(vcfpath,genome = genome.v)
-e.vcf <- VariantAnnotation::expand(smallvariants_VCF)
+#organ <- 'Breast'
+#smallvariants_VCF <- VariantAnnotation::readVcf(vcfpath,genome = genome.v)
+#e.vcf <- VariantAnnotation::expand(smallvariants_VCF)
 
 # separate SNV and Indels
-rd <- SummarizedExperiment::rowRanges(e.vcf)
-e.snv <- e.vcf[nchar(as.character(rd$REF))==1 & nchar(as.character(rd$ALT))==1,]
+#rd <- SummarizedExperiment::rowRanges(e.vcf)
+#e.snv <- e.vcf[nchar(as.character(rd$REF))==1 & nchar(as.character(rd$ALT))==1,]
 #if(sex == 'FEMALE'){
-selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X","Y"))
+#selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X","Y"))
 #  }else{
 #selected_snv <- VariantAnnotation::fixed(e.snv)[,"FILTER"]=="PASS" & as.character(SummarizedExperiment::seqnames(e.snv)) %in% paste0("chr",c(1:22,"X", "Y"))
 #  }
-e.snv <- e.snv[selected_snv,]
+#e.snv <- e.snv[selected_snv,]
 
 
 # collect SNV data into a table
-rd <- SummarizedExperiment::rowRanges(e.snv)
-rgs <- IRanges::ranges(e.snv)
-snvtab <- data.frame(chr=as.character(SummarizedExperiment::seqnames(e.snv)),
-                     POS=BiocGenerics::start(rgs),
-                     REF=as.character(rd$REF),
-                     ALT=as.character(rd$ALT),
-                     FILTER = VariantAnnotation::fixed(e.snv)[,"FILTER"],
+#rd <- SummarizedExperiment::rowRanges(e.snv)
+#rgs <- IRanges::ranges(e.snv)
+#snvtab <- data.frame(chr=as.character(SummarizedExperiment::seqnames(e.snv)),
+#                     POS=BiocGenerics::start(rgs),
+#                     REF=as.character(rd$REF),
+#                     ALT=as.character(rd$ALT),
+#                     FILTER = VariantAnnotation::fixed(e.snv)[,"FILTER"],
                      #VAF=VariantAnnotation::info(e.snv)[,"VAF"],
-                     DP=VariantAnnotation::geno(e.snv)$DP,
-                     AU=VariantAnnotation::geno(e.snv)$AU,
-                     TU=VariantAnnotation::geno(e.snv)$TU,
-                     CU=VariantAnnotation::geno(e.snv)$CU,
-                     GU=VariantAnnotation::geno(e.snv)$GU)
+#                     DP=VariantAnnotation::geno(e.snv)$DP,
+#                     AU=VariantAnnotation::geno(e.snv)$AU,
+#                     TU=VariantAnnotation::geno(e.snv)$TU,
+#                     CU=VariantAnnotation::geno(e.snv)$CU,
+#                     GU=VariantAnnotation::geno(e.snv)$GU)
 
 ##makes the index column an ID column
-snvtab <- cbind(ID = rownames(snvtab), snvtab)
-rownames(snvtab) <- 1:nrow(snvtab)
+#snvtab <- cbind(ID = rownames(snvtab), snvtab)
+#rownames(snvtab) <- 1:nrow(snvtab)
 
-snvtab$chr = gsub("chr", "", snvtab$chr)
-sampleID_cols <- gsub("-", ".", sampleID)
+#snvtab$chr = gsub("chr", "", snvtab$chr)
+#sampleID_cols <- gsub("-", ".", sampleID)
 
-names(snvtab)[names(snvtab) == paste0("DP.", sampleID_cols)]<- "DP"
-names(snvtab)[names(snvtab) == paste("AU.", sampleID_cols, ".1",sep='')] <- "A"
-names(snvtab)[names(snvtab) == paste("TU.", sampleID_cols, ".1", sep='')] <- "T"
-names(snvtab)[names(snvtab) == paste("CU.", sampleID_cols, ".1", sep='')] <- "C"
-names(snvtab)[names(snvtab) == paste("GU.", sampleID_cols,  ".1", sep='')] <- "G"
-names(snvtab)[names(snvtab) == 'chr'] <- '#CHROM'
+#names(snvtab)[names(snvtab) == paste0("DP.", sampleID_cols)]<- "DP"
+#names(snvtab)[names(snvtab) == paste("AU.", sampleID_cols, ".1",sep='')] <- "A"
+#names(snvtab)[names(snvtab) == paste("TU.", sampleID_cols, ".1", sep='')] <- "T"
+#names(snvtab)[names(snvtab) == paste("CU.", sampleID_cols, ".1", sep='')] <- "C"
+#names(snvtab)[names(snvtab) == paste("GU.", sampleID_cols,  ".1", sep='')] <- "G"
+#names(snvtab)[names(snvtab) == 'chr'] <- '#CHROM'
 
-snvtab['AD_REF'] <- rep(0, nrow(snvtab))
-snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
-snvtab['FORMAT'] <- rep('DP:AD', nrow(snvtab))
-for(i in 1:2){
-  cols = c('QUAL', 'INFO')
-  i = cols[i]
-  snvtab[i] <- rep('.', nrow(snvtab))
-}
-
-
-tumour_list<- c()
-
-for (row in 1:nrow(snvtab)){
-  bases <- c('A', 'T', 'C', 'G')
-  for(nuc in 1:4){
-    nuc <- bases[nuc]
-    if(snvtab$REF[row] == nuc){
-      snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, nuc])
-    }
-    else if(snvtab$ALT[row] == nuc){
-      snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
-    }
-  }
-  tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
-    }
-
-snvtab['TUMOR'] <- tumour_list
+#snvtab['AD_REF'] <- rep(0, nrow(snvtab))
+#snvtab['AD_ALT'] <- rep(0, nrow(snvtab))
+#snvtab['FORMAT'] <- rep('DP:AD', nrow(snvtab))
+#for(i in 1:2){
+#  cols = c('QUAL', 'INFO')
+#  i = cols[i]
+#  snvtab[i] <- rep('.', nrow(snvtab))
+#}
 
 
-snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF", "AD_ALT"))]
+#tumour_list<- c()
 
-col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
-snvtab <- snvtab[, col_order]
+#for (row in 1:nrow(snvtab)){
+#  bases <- c('A', 'T', 'C', 'G')
+#  for(nuc in 1:4){
+#    nuc <- bases[nuc]
+#    if(snvtab$REF[row] == nuc){
+#      snvtab$AD_REF[row] <-  snvtab$AD_REF[row] + as.integer(snvtab[row, nuc])
+#    }
+#   else if(snvtab$ALT[row] == nuc){
+#      snvtab$AD_ALT[row] <- snvtab$AD_ALT[row] +  as.integer(snvtab[row, nuc])
+#    }
+#  }
+#  tumour_list <- append(tumour_list, paste(snvtab$DP[row], ':', snvtab$AD_REF[row], ',', snvtab$AD_ALT[row], sep=''))
+#    }
 
-write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
-write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
+#snvtab['TUMOR'] <- tumour_list
+
+
+#snvtab <- snvtab[ , -which(names(snvtab) %in% c("DP","A", "T", "G", "C", "AD_REF", "AD_ALT"))]
+
+#col_order <- c("#CHROM", "POS", "ID", "REF","ALT", "QUAL", "FILTER", "INFO","FORMAT" , 'TUMOR' )
+#snvtab <- snvtab[, col_order]
+
+#write.table(header, file = paste0(sampleID,"_SNVs.txt"),row.names = F,quote = F,sep = "\t", col.names=F)
+#write.table(snvtab,file = paste0(sampleID,"_SNVs.txt"),sep = "\t",quote = F,col.names = T,row.names = F, append=T)
 ########################################################################################
 ##process cnv file
 ########################################################################################
@@ -127,19 +128,19 @@ cn_vcf <- cn_vcf[selection,]
 #construct cn df
 chr <- sapply(as.character(GenomeInfoDb::seqnames(cn_vcf)), function(x) ifelse(grepl(x,pattern = "^chr"),substr(x,start = 4,stop = 5),x))
 rr <- SummarizedExperiment::rowRanges(cn_vcf)
-sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,1]
-sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),1]
-#sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,2]
-#sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),2]
+#sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,1]
+#sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),1]
+sample_MCC <- VariantAnnotation::geno(cn_vcf)$MCC[,2]
+sample_MCC[is.na(sample_MCC)] <- VariantAnnotation::geno(cn_vcf)$CN[is.na(sample_MCC),2]
 sv_df <- data.frame(
              seqnames = chr,
              start = BiocGenerics::start(rr),
              end = VariantAnnotation::info(cn_vcf)$END,
-             total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,1],
-             minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,1] - sample_MCC,stringsAsFactors = FALSE)
-#             #total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,2],
-#             #minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,2] - sample_MCC,
-#             #stringsAsFactors = FALSE)
+             #total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,1],
+             #minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,1] - sample_MCC,stringsAsFactors = FALSE)
+             total.copy.number.inTumour = VariantAnnotation::geno(cn_vcf)$CN[,2],
+             minor_cn = VariantAnnotation::geno(cn_vcf)$CN[,2] - sample_MCC,
+             stringsAsFactors = FALSE)
             
 
 sv_df$start = sv_df$start +1
