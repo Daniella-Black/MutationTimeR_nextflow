@@ -21,8 +21,8 @@ process  CloudOS_MTR_input{
 
     output:
     file "*_CNVs.tsv"
-    file "*_SNVs.txt"
-    file '*_unique_filter_fields.tsv'
+    //file "*_SNVs.txt"
+    //file '*_unique_filter_fields.tsv'
 
 
     script:
