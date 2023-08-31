@@ -4,11 +4,9 @@ args = commandArgs(trailingOnly=TRUE)
 
 
 sampleID <- args[1]
-vcfpath <- args[2]
-cnvpath <- args[3]
-tp <- args[4]
-header <- args[5]
-organ <- args[6]
+cnvpath <- args[2]
+tp <- args[3]
+organ <- args[4]
 #sex <- args[6]
 
 #header <- read.csv(header, sep='\n', header=FALSE)
